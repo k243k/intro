@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>この人物、実在しません。— Kenta F.</title>
+<meta name="description" content="実在しない人物をAIで作り、SNSで運用しています。AIキャラクター制作・AI動画生成・業務自動化。Kenta F. の紹介ページ。">
+<meta name="theme-color" content="#0a0a0c">
+
+<!-- OGP（デプロイ後に og:url / og:image を実URLへ差し替え） -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="この人物、実在しません。">
+<meta property="og:description" content="実在しない人物をAIで作って、SNSで運用しています。— Kenta F. / AIクリエイター・自動化エンジニア">
+<meta property="og:url" content="https://k243k.github.io/intro/">
+<meta property="og:image" content="https://k243k.github.io/intro/assets/og.webp">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+:root{
+  --bg:#0a0a0c;
+  --bg2:#101014;
+  --ink:#e9e7e2;
+  --ink-dim:#8d8b86;
+  --line:#232328;
+  --shu:#d8412f; /* 朱 */
+  --serif:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;
+  --sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.9;
+  letter-spacing:.04em;-webkit-font-smoothing:antialiased;
+}
+img,video{display:block;max-width:100%;height:auto}
+a{color:inherit}
+
+/* ===== ヒーロー ===== */
+.hero{position:relative;min-height:100svh;overflow:hidden;display:flex;align-items:flex-end}
+.hero-grid{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 20%;
+}
+.hero-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,12,.25) 0%,rgba(10,10,12,.05) 35%,rgba(10,10,12,.55) 70%,rgba(10,10,12,.96) 100%);
+}
+.hero-inner{
+  position:relative;width:100%;
+  padding:0 24px calc(40px + env(safe-area-inset-bottom));
+}
+.hero h1{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(30px,9vw,64px);line-height:1.45;letter-spacing:.06em;
+  opacity:0;animation:rise .9s ease-out .15s forwards;
+}
+.hero .turn{
+  margin-top:14px;font-family:var(--serif);
+  font-size:clamp(15px,4.2vw,22px);letter-spacing:.14em;color:var(--ink);
+  opacity:0;animation:rise .9s ease-out .8s forwards;
+}
+.hero .who{
+  margin-top:26px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  opacity:0;animation:rise .9s ease-out 1.3s forwards;
+}
+.hero .who .name{font-size:17px;letter-spacing:.18em;font-weight:600}
+.hero .who .role{font-size:12px;color:var(--ink-dim);letter-spacing:.16em}
+/* 朱の角印 */
+.seal{
+  position:absolute;right:24px;bottom:calc(140px + env(safe-area-inset-bottom));
+  writing-mode:vertical-rl;font-family:var(--serif);
+  font-size:15px;letter-spacing:.3em;color:var(--shu);
+  border:1.5px solid var(--shu);padding:12px 7px;line-height:1;
+  transform:rotate(3deg);opacity:0;animation:stamp .5s ease-out 1.9s forwards;
+}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes stamp{from{opacity:0;transform:rotate(3deg) scale(1.6)}to{opacity:.92;transform:rotate(3deg) scale(1)}}
+@media (prefers-reduced-motion:reduce){
+  .hero h1,.hero .turn,.hero .who,.seal{animation:none;opacity:1}
+}
+
+/* ===== 本文共通 ===== */
+main{max-width:680px;margin:0 auto;padding:0 24px}
+section{padding:72px 0 0}
+.idx{
+  font-family:var(--serif);font-size:12px;letter-spacing:.3em;
+  color:var(--shu);margin-bottom:14px;
+}
+h2{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(22px,6vw,30px);line-height:1.6;letter-spacing:.06em;
+  margin-bottom:18px;
+}
+.note{color:var(--ink-dim);font-size:14px;max-width:36em}
+figure{margin-top:28px}
+figcaption{font-size:11px;color:var(--ink-dim);letter-spacing:.12em;margin-top:10px}
+
+/* スクロールリビール（JS有効時のみ隠す。JS無効でも全文表示される） */
+.js .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s ease}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
+
+/* ビフォーアフター */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ba img{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--bg2)}
+.ba .tag{font-size:10px;letter-spacing:.26em;color:var(--ink-dim);margin-top:8px}
+
+/* 動画 */
+.demo video{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--bg2)}
+
+/* 自己紹介 */
+.about{border-top:1px solid var(--line);margin-top:80px;padding-top:64px}
+.about p{font-family:var(--serif);font-size:clamp(16px,4.4vw,19px);line-height:2.3;letter-spacing:.08em}
+
+/* 連絡 */
+.contact{padding:72px 0 0}
+.contact .lead{font-size:13px;color:var(--ink-dim);letter-spacing:.1em;margin-bottom:24px}
+.links{display:grid;gap:12px}
+.links a{
+  display:flex;align-items:center;justify-content:space-between;
+  border:1px solid var(--line);padding:18px 20px;text-decoration:none;
+  font-size:14px;letter-spacing:.14em;transition:border-color .3s ease;
+}
+.links a:hover{border-color:var(--shu)}
+.links a span{
+  color:var(--ink-dim);font-size:12px;margin-left:16px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.links a b{font-weight:600;white-space:nowrap}
+
+footer{
+  margin-top:88px;padding:28px 24px calc(28px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line);
+  text-align:center;font-size:11px;color:var(--ink-dim);letter-spacing:.2em;
+}
+
+@media (min-width:720px){
+  .hero-inner{padding:0 48px 64px}
+  .seal{right:48px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="hero-grid" src="./assets/grid.webp" alt="AIで生成した同一人物の顔グリッド" width="1080" height="1080" fetchpriority="high">
+  <div class="hero-veil"></div>
+  <p class="seal">非実在</p>
+  <div class="hero-inner">
+    <h1>この人物、<br>実在しません。</h1>
+    <p class="turn">— つくったのは、私です。</p>
+    <p class="who">
+      <span class="name">Kenta F.</span>
+      <span class="role">AIクリエイター / 自動化エンジニア</span>
+    </p>
+  </div>
+</header>
+
+<main>
+  <section class="rv">
+    <p class="idx">01</p>
+    <h2>実在しない人物を、<br>作って動かす</h2>
+    <p class="note">1枚の設計から、同じ顔をどんな場面でも生成できます。この人物はSNSアカウントとして実際に運用中です。</p>
+    <figure>
+      <div class="ba">
+        <div>
+          <img src="./assets/before.webp" alt="調整前の生成画像" width="800" height="1000" loading="lazy">
+          <p class="tag">BEFORE</p>
+        </div>
+        <div>
+          <img src="./assets/after.webp" alt="顔の一貫性を保った生成画像" width="800" height="1000" loading="lazy">
+          <p class="tag">AFTER</p>
+        </div>
+      </div>
+      <figcaption>同一人物として成立させる「顔の一貫性」が技術の核です。</figcaption>
+    </figure>
+  </section>
+
+  <section class="rv">
+    <p class="idx">02</p>
+    <h2>どんな場面にも、現れる</h2>
+    <p class="note">カフェ、雨の街、雪の並木道。撮影なし、モデルなし、すべて生成です。しゃべって動く動画版も、いま制作中。</p>
+    <figure class="demo">
+      <video src="./assets/demo.mp4" muted loop playsinline preload="none" aria-label="AI生成画像によるシーンモンタージュ動画"></video>
+      <figcaption>6秒ループ / 全コマAI生成画像</figcaption>
+    </figure>
+  </section>
+
+  <section class="rv">
+    <p class="idx">03</p>
+    <h2>面倒な作業を、<br>コードで消す</h2>
+    <p class="note">投稿も、集計も、レポートも。AIに任せる「仕組みごと」自分で作っています。画像を作るだけでなく、回し続けるのが本業です。</p>
+  </section>
+
+  <section class="about rv">
+    <p>大阪でAIと遊んでいるうちに、遊びがだんだん仕事になってきた人です。「これってAIでできる？」くらいの雑な相談がいちばん好きです。</p>
+  </section>
+
+  <section class="contact rv">
+    <p class="lead">飲みの席で聞きそびれたことは、こちらへ。</p>
+    <div class="links">
+      <a href="https://x.com/REPLACE_X_USERNAME" target="_blank" rel="noopener"><b>X（DMどうぞ）</b><span>@REPLACE_X_USERNAME</span></a>
+      <a href="mailto:REPLACE_PERSONAL@example.com"><b>メール</b><span>REPLACE_PERSONAL@example.com</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>KENTA F. — ALL IMAGES GENERATED BY AI</footer>
+
+<script>
+(function () {
+  "use strict";
+  document.documentElement.classList.add("js");
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("in");
+      var v = e.target.querySelector("video");
+      if (v && !v.dataset.started) {
+        v.dataset.started = "1";
+        v.load();
+        v.play().catch(function () {});
+      }
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: "0px 0px 120px 0px", threshold: 0.1 });
+  document.querySelectorAll(".rv").forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

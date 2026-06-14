@@ -3,154 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>会社の“面倒”を、動く仕組みに変える。— Kenta F.</title>
-<meta name="description" content="曖昧な業務相談から、設計・開発・運用までひとりで。Web・LINE・AI・自動化を組み合わせて、手作業とミスを減らします。実際に触れるデモあり。Kenta F.">
-<meta name="theme-color" content="#0a0a0c">
+<title>伏見 建太 — 事業のアイデアを、実際に動くものまで作る。</title>
+<meta name="description" content="伏見建太のポートフォリオ。Web・LINE・業務システム・AIを、企画から設計・開発・公開・運用までひとりで。大阪で活動。実際に触れるデモあり。">
+<meta name="theme-color" content="#f7f6f3">
 
-<!-- OGP -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="会社の“面倒”を、動く仕組みに変える。">
-<meta property="og:description" content="業務改善を、ヒアリングから設計・開発・運用までひとりで形にします。— Kenta F.">
+<meta property="og:title" content="伏見 建太 — 事業のアイデアを、実際に動くものまで作る。">
+<meta property="og:description" content="Web・LINE・業務システム・AIを、企画から運用までひとりで。大阪で活動。">
 <meta property="og:url" content="https://k243k.github.io/intro/">
 <meta property="og:image" content="https://k243k.github.io/intro/assets/og.webp">
 <meta name="twitter:card" content="summary_large_image">
 
 <style>
 :root{
-  --bg:#0a0a0c; --bg2:#101014; --bg3:#15151b;
-  --ink:#e9e7e2; --ink-dim:#8d8b86; --line:#232328;
-  --shu:#d8412f; --grn:#3ad07a;
+  --bg:#f7f6f3; --paper:#ffffff; --panel:#f0eee9;
+  --ink:#1a1a1e; --ink2:#56544e; --ink-dim:#8b897f;
+  --line:#e2e0d9; --line2:#d2cfc6;
+  --shu:#c0392b; --grn:#1f7a52;
   --serif:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;
   --sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
   --mono:"SF Mono","SFMono-Regular",ui-monospace,Menlo,monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.9;letter-spacing:.04em;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.9;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding:0 22px}
 
-/* ===== ヒーロー ===== */
-.hero{position:relative;min-height:88svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:0 28px;background:radial-gradient(120% 90% at 80% 0%,#16161c 0%,var(--bg) 55%),var(--bg)}
-.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,9.5vw,68px);line-height:1.5;letter-spacing:.05em;opacity:0;animation:rise .9s ease-out .1s forwards}
-.hero .sub{margin-top:22px;font-size:clamp(13px,3.8vw,16px);color:var(--ink-dim);letter-spacing:.08em;line-height:2;max-width:26em;opacity:0;animation:rise .9s ease-out .7s forwards}
-.hero .who{margin-top:32px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;opacity:0;animation:rise .9s ease-out 1.1s forwards}
-.hero .who .name{font-size:18px;letter-spacing:.18em;font-weight:600}
-.hero .who .role{font-size:12px;color:var(--ink-dim);letter-spacing:.12em}
-.seal{position:absolute;right:28px;top:calc(11svh + env(safe-area-inset-top));transform:rotate(3deg);writing-mode:vertical-rl;font-family:var(--serif);font-size:14px;letter-spacing:.28em;color:var(--shu);border:1.5px solid var(--shu);padding:11px 7px;line-height:1;opacity:0;animation:stamp .5s ease-out 1.6s forwards}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes stamp{from{opacity:0;transform:rotate(3deg) scale(1.6)}to{opacity:.92;transform:rotate(3deg) scale(1)}}
-@media (prefers-reduced-motion:reduce){.hero h1,.hero .sub,.hero .who,.seal{animation:none;opacity:1}}
-
-/* ===== 共通 ===== */
-main{max-width:700px;margin:0 auto;padding:0 24px}
-section{padding:78px 0 0}
-.idx{font-family:var(--serif);font-size:12px;letter-spacing:.3em;color:var(--shu);margin-bottom:12px}
-.cat{font-size:11px;letter-spacing:.22em;color:var(--ink-dim);margin-bottom:14px}
-h2{font-family:var(--serif);font-weight:600;font-size:clamp(22px,6vw,30px);line-height:1.55;letter-spacing:.05em;margin-bottom:16px}
-.note{color:var(--ink-dim);font-size:14px;max-width:38em}
-figcaption{font-size:11px;color:var(--ink-dim);letter-spacing:.1em;margin-top:10px}
-
-.js .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s ease}
+.js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
 .js .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
 
-/* 課題→数字 バッジ */
-.kpi{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 4px}
-.kpi span{font-size:11px;letter-spacing:.06em;color:var(--ink);background:var(--bg3);border:1px solid var(--line);padding:6px 11px;border-radius:3px}
-.kpi b{color:var(--grn);font-weight:600}
-.veri{font-size:10.5px;color:var(--ink-dim);letter-spacing:.06em;margin-top:10px}
+/* ===== ヒーロー：本人主役 ===== */
+.hero{padding:38px 22px 30px;max-width:760px;margin:0 auto}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:24px}
+.portrait{width:100%;border-radius:10px;overflow:hidden;background:var(--panel);border:1px solid var(--line)}
+.portrait img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,7.5vw,46px);line-height:1.45;letter-spacing:.03em;margin-top:4px}
+.hero .name{font-size:13px;letter-spacing:.32em;color:var(--shu);font-weight:600;margin-bottom:14px}
+.hero .meta{margin-top:18px;font-size:13px;color:var(--ink2);line-height:1.85}
+.hero .meta b{color:var(--ink);font-weight:600}
+.hero .aux{margin-top:14px;font-family:var(--serif);font-size:13px;color:var(--ink-dim);letter-spacing:.08em}
+@media (min-width:680px){
+  .hero{padding-top:56px}
+  .hero-grid{grid-template-columns:300px 1fr;align-items:center;gap:36px}
+}
 
-/* ===== 触れるデモ（商品登録自動化） ===== */
-.demo{margin-top:26px;border:1px solid var(--line);background:linear-gradient(180deg,var(--bg2),var(--bg));border-radius:8px;overflow:hidden}
-.demo-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--bg3)}
-.demo-bar .dot{width:9px;height:9px;border-radius:50%;background:#2c2c34}
-.demo-bar .ttl{margin-left:6px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-dim)}
+/* セクション見出し */
+.lead{padding:64px 0 0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink-dim);margin-bottom:10px}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(20px,5.5vw,28px);line-height:1.5;letter-spacing:.03em}
+
+/* ===== 代表作 ===== */
+.project{padding:56px 0 0}
+.p-tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--shu);border:1px solid var(--shu);border-radius:3px;padding:4px 10px;margin-bottom:16px}
+.p-title{font-family:var(--serif);font-weight:600;font-size:clamp(22px,6vw,32px);line-height:1.4;margin-bottom:14px}
+.p-why{font-size:14.5px;color:var(--ink2);line-height:1.95;max-width:40em}
+.p-shot{margin:26px 0 6px;border-radius:10px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 18px 40px -24px rgba(40,38,30,.35)}
+.p-shot img{width:100%;display:block}
+.p-cap{font-size:11.5px;color:var(--ink-dim);letter-spacing:.04em}
+.p-cap .live{display:inline-flex;align-items:center;gap:7px}
+.p-cap .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--grn)}
+
+/* 担当範囲・技術構成 */
+.specs{margin-top:24px;display:grid;gap:16px}
+.spec h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-dim);margin-bottom:8px;font-weight:400}
+.role-row{display:flex;flex-wrap:wrap;gap:7px}
+.role-row span{font-size:12px;color:var(--ink);background:var(--paper);border:1px solid var(--line2);padding:5px 11px;border-radius:20px}
+.stack{font-family:var(--mono);font-size:12px;color:var(--ink2);line-height:1.9;letter-spacing:.02em}
+.kpi{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.kpi span{font-size:13px;color:var(--ink);background:var(--panel);border:1px solid var(--line);padding:9px 14px;border-radius:5px}
+.kpi b{color:var(--grn);font-weight:700}
+.veri{font-size:10.5px;color:var(--ink-dim);margin-top:10px;letter-spacing:.02em}
+
+/* ===== 触れるデモ ===== */
+.demo{margin-top:24px;border:1px solid var(--line2);background:var(--paper);border-radius:10px;overflow:hidden}
+.demo-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+.demo-bar .dot{width:9px;height:9px;border-radius:50%;background:#cfccc2}
+.demo-bar .ttl{margin-left:6px;font-family:var(--mono);font-size:11px;color:var(--ink-dim)}
 .demo-body{padding:18px 16px}
+.touch{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--shu);margin-bottom:14px}
 .tabs{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap}
-.tab{flex:1;min-width:90px;font-size:12px;letter-spacing:.04em;padding:9px 6px;text-align:center;border:1px solid var(--line);background:var(--bg);color:var(--ink-dim);border-radius:4px;cursor:pointer;transition:.2s}
-.tab.on{border-color:var(--shu);color:var(--ink);background:#1a1216}
-.io-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--ink-dim);margin:0 0 8px}
-.input-card{display:flex;gap:13px;align-items:center;padding:13px;border:1px dashed var(--line);border-radius:6px;background:var(--bg)}
-.thumb{width:64px;height:64px;flex:none;border-radius:5px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ink-dim);text-align:center;line-height:1.3;background:radial-gradient(circle at 50% 35%,#26262f,#141418)}
+.tab{flex:1;min-width:88px;font-size:12px;padding:9px 6px;text-align:center;border:1px solid var(--line2);background:var(--bg);color:var(--ink2);border-radius:5px;cursor:pointer;transition:.2s}
+.tab.on{border-color:var(--shu);color:var(--shu);background:#fbeeec;font-weight:600}
+.io-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink-dim);margin:0 0 8px}
+.input-card{display:flex;gap:13px;align-items:center;padding:13px;border:1px dashed var(--line2);border-radius:7px;background:var(--bg)}
+.thumb{width:62px;height:62px;flex:none;border-radius:6px;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ink-dim);text-align:center;line-height:1.3;background:var(--panel)}
 .memo{font-size:13px;color:var(--ink);line-height:1.7}
-.memo small{display:block;color:var(--ink-dim);font-size:10.5px;letter-spacing:.1em;margin-bottom:3px;font-family:var(--mono)}
-.run{margin-top:15px;width:100%;padding:13px;border:none;border-radius:5px;background:var(--shu);color:#fff;font-size:14px;font-weight:600;letter-spacing:.1em;cursor:pointer;font-family:var(--sans);transition:.2s}
+.memo small{display:block;color:var(--ink-dim);font-size:10.5px;letter-spacing:.06em;margin-bottom:3px;font-family:var(--mono)}
+.run{margin-top:15px;width:100%;padding:13px;border:none;border-radius:6px;background:var(--shu);color:#fff;font-size:14px;font-weight:600;letter-spacing:.08em;cursor:pointer;font-family:var(--sans);transition:.2s}
 .run:disabled{opacity:.5;cursor:default}
-.run:not(:disabled):hover{background:#e85540}
-.out{margin-top:18px;display:none}
+.run:not(:disabled):hover{background:#a93226}
+.out{margin-top:16px;display:none}
 .out.show{display:block}
-.row{padding:12px 0;border-top:1px solid var(--line);opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
-.row.in{opacity:1;transform:none}
-.row .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--shu);margin-bottom:5px}
-.row .v{font-size:13.5px;line-height:1.75;color:var(--ink)}
+.orow{padding:12px 0;border-top:1px solid var(--line);opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+.orow.in{opacity:1;transform:none}
+.orow .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--shu);margin-bottom:5px}
+.orow .v{font-size:13.5px;line-height:1.75;color:var(--ink)}
 .tagrow{display:flex;flex-wrap:wrap;gap:6px}
-.tagrow span{font-size:11px;color:var(--ink-dim);background:var(--bg3);border:1px solid var(--line);padding:3px 9px;border-radius:20px}
-.csvbox{font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--ink-dim);background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:11px;overflow-x:auto;white-space:pre}
-.dl{margin-top:11px;display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.06em;color:var(--ink);border:1px solid var(--grn);border-radius:5px;padding:9px 15px;text-decoration:none;cursor:pointer;background:none;font-family:var(--sans)}
-.dl:hover{background:rgba(58,208,122,.08)}
+.tagrow span{font-size:11px;color:var(--ink2);background:var(--panel);border:1px solid var(--line);padding:3px 9px;border-radius:20px}
+.csvbox{font-family:var(--mono);font-size:10.5px;line-height:1.7;color:var(--ink2);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:11px;overflow-x:auto;white-space:pre}
+.dl{margin-top:11px;display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink);border:1px solid var(--grn);border-radius:6px;padding:9px 15px;cursor:pointer;background:none;font-family:var(--sans)}
+.dl:hover{background:rgba(31,122,82,.07)}
 .dl::before{content:"↓";color:var(--grn)}
-.demo-foot{font-size:10.5px;color:var(--ink-dim);letter-spacing:.04em;padding:13px 16px;border-top:1px solid var(--line);background:var(--bg3)}
-
-/* 仕組み3ステップ */
-.flow{margin-top:22px;display:grid;gap:10px}
-.flow .s{display:flex;gap:13px;align-items:flex-start;font-size:13px;color:var(--ink)}
+.demo-foot{font-size:10.5px;color:var(--ink-dim);padding:13px 16px;border-top:1px solid var(--line);background:var(--panel)}
+.flow{margin-top:20px;display:grid;gap:10px}
+.flow .s{display:flex;gap:12px;align-items:flex-start;font-size:13px;color:var(--ink)}
 .flow .s i{flex:none;width:24px;height:24px;border-radius:50%;border:1px solid var(--shu);color:var(--shu);font-style:normal;font-size:11px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);margin-top:2px}
 .flow .s small{display:block;color:var(--ink-dim);font-size:12px}
 
-/* 補助セクションのメディア */
-.shot img{width:100%;object-fit:cover;background:var(--bg2);border:1px solid var(--line);border-radius:6px}
-.shot.site img{aspect-ratio:16/10}
-.shot.faces img{aspect-ratio:1/1}
-.chat{margin-top:22px;border:1px solid var(--line);background:var(--bg2);padding:20px 15px;display:flex;flex-direction:column;gap:10px;border-radius:6px}
-.chat .b{max-width:80%;padding:9px 13px;font-size:12.5px;line-height:1.6;border-radius:13px}
-.chat .user{align-self:flex-end;background:#26262e;border-bottom-right-radius:4px}
-.chat .bot{align-self:flex-start;background:#1a1a20;border:1px solid var(--line);border-bottom-left-radius:4px}
-.chat .bot::before{content:"AI";display:inline-block;margin-right:7px;font-size:9px;letter-spacing:.16em;color:var(--shu);border:1px solid var(--shu);padding:1px 5px;border-radius:3px;vertical-align:1px}
-.proof{margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid var(--line);padding:15px 17px;text-decoration:none;border-radius:6px;transition:border-color .3s}
-.proof:hover{border-color:var(--shu)}
-.proof .l b{font-size:13px;font-weight:600;display:block}
-.proof .l small{font-size:11px;color:var(--ink-dim)}
-.proof .price{font-family:var(--serif);font-size:15px;white-space:nowrap}
-.proof .arrow{color:var(--shu);font-size:18px}
+/* ===== その他できること ===== */
+.more{padding:64px 0 0}
+.more-grid{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.more-grid div{background:var(--bg);padding:16px 15px;font-size:13px;color:var(--ink)}
+.more-grid div small{display:block;font-size:11px;color:var(--ink-dim);margin-top:3px;letter-spacing:.02em}
 
-.about{border-top:1px solid var(--line);margin-top:88px;padding-top:60px}
-.about p{font-family:var(--serif);font-size:clamp(16px,4.4vw,19px);line-height:2.3;letter-spacing:.08em}
+/* ===== プロフィール ===== */
+.profile{padding:64px 0 0}
+.profile dl{margin-top:20px;border-top:1px solid var(--line)}
+.profile .pr{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.profile dt{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-dim);padding-top:3px}
+.profile dd{font-size:14px;color:var(--ink);line-height:1.8}
 
-.contact{padding:72px 0 0}
-.contact .lead{font-size:13px;color:var(--ink-dim);letter-spacing:.1em;margin-bottom:22px}
-.links{display:grid;gap:12px}
-.links a,.links .soon{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);padding:18px 20px;text-decoration:none;font-size:14px;letter-spacing:.14em;border-radius:6px}
-.links a{transition:border-color .3s}
-.links a:hover{border-color:var(--shu)}
-.links .soon{color:var(--ink-dim);cursor:default}
-.links b{font-weight:600;white-space:nowrap}
-.links span{color:var(--ink-dim);font-size:12px;margin-left:16px}
+/* ===== CTA ===== */
+.cta{padding:70px 0 0;text-align:center}
+.cta p{font-family:var(--serif);font-size:clamp(17px,4.6vw,21px);line-height:1.9;letter-spacing:.04em}
+.cta .small{font-family:var(--sans);font-size:13px;color:var(--ink2);margin-top:12px;letter-spacing:.04em}
+.cta-btns{margin-top:28px;display:grid;gap:12px;max-width:360px;margin-left:auto;margin-right:auto}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:18px;border-radius:8px;font-size:15px;font-weight:600;letter-spacing:.08em;text-decoration:none;transition:.2s}
+.btn-x{background:var(--ink);color:var(--paper)}
+.btn-x:hover{background:#000}
+.btn-soon{background:var(--panel);color:var(--ink-dim);border:1px solid var(--line);cursor:default}
 
-footer{margin-top:88px;padding:28px 24px calc(28px + env(safe-area-inset-bottom));border-top:1px solid var(--line);text-align:center;font-size:11px;color:var(--ink-dim);letter-spacing:.18em}
-
-@media (min-width:720px){.hero{padding:0 48px}.seal{right:48px}}
+footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom));border-top:1px solid var(--line);text-align:center;font-size:11px;color:var(--ink-dim);letter-spacing:.12em}
 </style>
 </head>
 <body>
 
+<!-- ===== ヒーロー ===== -->
 <header class="hero">
-  <p class="seal">一人DX</p>
-  <h1>会社の“面倒”を、<br>動く仕組みに変える。</h1>
-  <p class="sub">「これ毎回手作業でやってて…」という曖昧な相談から、設計・開発・運用までひとりで。Web・LINE・AI・自動化を組み合わせて、手作業とミスと取りこぼしを減らします。</p>
-  <p class="who">
-    <span class="name">Kenta F.</span>
-    <span class="role">業務改善 — ヒアリングから運用まで一人で</span>
-  </p>
+  <div class="hero-grid">
+    <div class="portrait">
+      <img src="./assets/portrait.webp" alt="伏見建太の写真" width="800" height="1000" fetchpriority="high">
+    </div>
+    <div>
+      <p class="name">伏見 建太　KENTA FUSHIMI</p>
+      <h1>事業のアイデアを、<br>実際に動くものまで作る。</h1>
+      <p class="meta"><b>Web ／ LINE ／ 業務システム ／ AI</b><br>企画・設計・開発・公開・運用まで、ひとりで担当します。</p>
+      <p class="aux">— たいていのもの、つくれます。</p>
+    </div>
+  </div>
 </header>
 
 <main>
-  <!-- ===== 主役：業務自動化 ===== -->
-  <section class="rv">
-    <p class="idx">01</p>
-    <p class="cat">手作業を減らす — 受発注・商品登録の自動化</p>
-    <h2>商品登録、1件30分の<br>手入力を消す</h2>
-    <p class="note">ネット通販の出品は、1商品ごとに名前・説明・カテゴリ・タグを手で書き、モールごとのCSVに整える——これが地味に重い。写真と一言メモを渡すだけで、ここまで自動生成します。下のデモ、実際に動きます。CSVもダウンロードできます。</p>
+  <!-- ===== 代表作 ===== -->
+  <section class="lead wrap rv">
+    <p class="eyebrow">SELECTED WORK</p>
+    <h2>つくったものを、<br>2つだけ深く。</h2>
+  </section>
+
+  <!-- PROJECT 01 -->
+  <article class="project wrap rv">
+    <span class="p-tag">PROJECT 01 ／ メディアサイト</span>
+    <h3 class="p-title">レビュー特化の<br>口コミメディアサイト</h3>
+    <p class="p-why">「店選びで失敗したくない」人向けに、エリア別・項目別で本音のレビューを探せるサイト。デザインだけでなく、記事・店舗・レビューを管理画面から増やせる“運用できる仕組み”ごと、ゼロから作りました。今も公開・運用中です。</p>
+    <figure class="p-shot">
+      <img src="./assets/work-site.webp" alt="制作したレビューメディアサイトの画面" width="1000" height="625" loading="lazy">
+    </figure>
+    <p class="p-cap"><span class="live">公開・運用中のサイト（業種は非公開）</span></p>
+    <div class="specs">
+      <div class="spec">
+        <h4>担当した範囲</h4>
+        <div class="role-row"><span>企画・要件定義</span><span>デザイン</span><span>フロント実装</span><span>DB設計</span><span>管理画面</span><span>会員・権限</span><span>公開・運用</span></div>
+      </div>
+      <div class="spec">
+        <h4>技術構成</h4>
+        <p class="stack">Next.js（静的書き出し）／ TypeScript ／ Supabase（DB・認証）／ ロール権限つき管理画面 ／ GitHub Pages 公開</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- PROJECT 02 -->
+  <article class="project wrap rv">
+    <span class="p-tag">PROJECT 02 ／ 業務自動化</span>
+    <h3 class="p-title">商品登録、1件30分の<br>手入力を消すツール</h3>
+    <p class="p-why">ネット通販の出品は、1商品ごとに名前・説明・カテゴリ・タグを手で書き、モールごとのCSVに整える——これが地味に重い作業でした。写真と一言メモを渡すだけで、ここまで自動生成する仕組みを作りました。下のデモ、実際に動きます。CSVもダウンロードできます。</p>
 
     <div class="kpi">
       <span>手入力 約28分 → <b>約3分</b>／件</span>
@@ -161,193 +199,152 @@ footer{margin-top:88px;padding:28px 24px calc(28px + env(safe-area-inset-bottom)
     <div class="demo" id="demo">
       <div class="demo-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ttl">product-autogen / demo</span></div>
       <div class="demo-body">
+        <p class="touch">▶ 押すと実際に動きます</p>
         <div class="tabs" id="tabs"></div>
         <p class="io-label">INPUT — 写真＋雑メモ</p>
         <div class="input-card">
           <div class="thumb" id="thumb">商品<br>写真</div>
-          <div class="memo"><small id="memoLabel">あなたが入力するのはこれだけ</small><span id="memo"></span></div>
+          <div class="memo"><small id="memoLabel">入力するのはこれだけ</small><span id="memo"></span></div>
         </div>
         <button class="run" id="run">AIで生成する</button>
         <div class="out" id="out">
           <p class="io-label" style="margin-top:18px">OUTPUT — 自動生成された出品データ</p>
-          <div class="row" data-i="0"><div class="k">商品名</div><div class="v" id="o-name"></div></div>
-          <div class="row" data-i="1"><div class="k">商品説明</div><div class="v" id="o-desc"></div></div>
-          <div class="row" data-i="2"><div class="k">カテゴリ</div><div class="v" id="o-cat"></div></div>
-          <div class="row" data-i="3"><div class="k">タグ</div><div class="v tagrow" id="o-tags"></div></div>
-          <div class="row" data-i="4"><div class="k">楽天・Yahoo! 用 CSV</div><div class="v"><div class="csvbox" id="o-csv"></div><button class="dl" id="dl">CSVをダウンロード</button></div></div>
+          <div class="orow" data-i="0"><div class="k">商品名</div><div class="v" id="o-name"></div></div>
+          <div class="orow" data-i="1"><div class="k">商品説明</div><div class="v" id="o-desc"></div></div>
+          <div class="orow" data-i="2"><div class="k">カテゴリ</div><div class="v" id="o-cat"></div></div>
+          <div class="orow" data-i="3"><div class="k">タグ</div><div class="v tagrow" id="o-tags"></div></div>
+          <div class="orow" data-i="4"><div class="k">楽天・Yahoo! 用 CSV</div><div class="v"><div class="csvbox" id="o-csv"></div><button class="dl" id="dl">CSVをダウンロード</button></div></div>
         </div>
       </div>
-      <div class="demo-foot">これはブラウザ内で動く検証デモです。実案件では商品マスタ・在庫・モール仕様に合わせて構築します。</div>
+      <div class="demo-foot">ブラウザ内で動く検証デモです。実案件では商品マスタ・在庫・モール仕様に合わせて構築します。</div>
     </div>
 
-    <div class="flow">
-      <div class="s"><i>1</i><div>写真と一言メモを読み取る<small>画像認識＋自然言語処理で、何の商品か・特徴は何かを把握</small></div></div>
-      <div class="s"><i>2</i><div>商品名・説明・カテゴリ・タグを生成<small>検索されやすい言葉を選び、誇張表現は避けて自動で文章化</small></div></div>
-      <div class="s"><i>3</i><div>モール仕様に合わせてCSV整形<small>楽天・Yahoo!・自社カートそれぞれの項目に合わせて一括出力</small></div></div>
+    <div class="specs">
+      <div class="spec">
+        <h4>仕組み</h4>
+        <div class="flow">
+          <div class="s"><i>1</i><div>写真と一言メモを読み取る<small>画像認識＋自然言語処理で、何の商品か・特徴を把握</small></div></div>
+          <div class="s"><i>2</i><div>商品名・説明・カテゴリ・タグを生成<small>検索されやすい言葉を選び、誇張表現は避けて文章化</small></div></div>
+          <div class="s"><i>3</i><div>モール仕様に合わせCSV整形<small>楽天・Yahoo!・自社カートの項目に合わせ一括出力</small></div></div>
+        </div>
+      </div>
+      <div class="spec">
+        <h4>技術構成</h4>
+        <p class="stack">画像認識 ＋ LLM（生成）／ CSV 整形パイプライン ／ ブラウザ完結デモ（APIキー非露出）</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- ===== その他できること ===== -->
+  <section class="more wrap rv">
+    <p class="eyebrow">ALSO AVAILABLE</p>
+    <h2>ほかにも、こんなものを。</h2>
+    <div class="more-grid">
+      <div>LINE受付・予約<small>自動応答から顧客管理まで</small></div>
+      <div>書類の読み取り<small>請求書・注文書をデータ化</small></div>
+      <div>データ収集・集計<small>市場価格を24時間自動収集</small></div>
+      <div>管理画面の構築<small>一覧・検索・CSV・権限</small></div>
+      <div>決済・会員機能<small>登録・ログイン・課金</small></div>
+      <div>AI画像・動画<small>撮影なしで素材を量産</small></div>
     </div>
   </section>
 
-  <!-- ===== 補助：問い合わせ・予約（LINE） ===== -->
-  <section class="rv">
-    <p class="idx">02</p>
-    <p class="cat">取りこぼしを減らす — LINE受付・予約・顧客管理</p>
-    <h2>24時間、お店の代わりに<br>受け付けるLINE</h2>
-    <p class="note">営業時間の質問から予約受付・顧客情報の登録・スタッフへの引き継ぎまで。会話だけで終わらせず、裏側の管理画面まで作ります。まずは入口のチャット受付から、ココナラでも受注中です。</p>
-    <div class="chat" role="img" aria-label="AIチャットボットの会話例">
-      <p class="b user">今日って何時までやってますか？</p>
-      <p class="b bot">本日は22時まで営業しています。ラストオーダーは21時30分です。</p>
-      <p class="b user">2名、20時で予約できますか？</p>
-      <p class="b bot">ご予約承れます。お名前をお伺いできますか？（このあと予約として管理画面に登録されます）</p>
-    </div>
-    <a class="proof" href="https://coconala.com/services/4164076" target="_blank" rel="noopener">
-      <span class="l"><b>ココナラで受注中</b><small>AIが自動応答するLINEボットを作成します</small></span>
-      <span class="price">¥15,000〜</span><span class="arrow" aria-hidden="true">→</span>
-    </a>
+  <!-- ===== プロフィール ===== -->
+  <section class="profile wrap rv">
+    <p class="eyebrow">PROFILE</p>
+    <h2>つくっている人</h2>
+    <dl>
+      <div class="pr"><dt>名前</dt><dd>伏見 建太（ふしみ けんた）</dd></div>
+      <div class="pr"><dt>拠点</dt><dd>大阪を拠点に活動</dd></div>
+      <div class="pr"><dt>やること</dt><dd>業務の「面倒」をヒアリングして、Web・LINE・AI・自動化を組み合わせ、実際に動く仕組みに変えるところまで一人で。</dd></div>
+      <div class="pr"><dt>つくったもの</dt><dd>口コミメディアサイト／商品登録の自動化ツール／LINE自動応答ボット／市場データ収集の仕組み／AIキャラクターのSNS運用 など。</dd></div>
+      <div class="pr"><dt>得意な相談</dt><dd>「これ毎回手作業でやってて…」「これってAIでできる？」くらいの、ふわっとした段階の相談。</dd></div>
+    </dl>
   </section>
 
-  <!-- ===== 補助：集客（Web） ===== -->
-  <section class="rv">
-    <p class="idx">03</p>
-    <p class="cat">問い合わせを増やす — Webサイト・集客導線</p>
-    <h2>“ちゃんと信用される”<br>お店のサイト</h2>
-    <p class="note">見た目を整えるだけでなく、LINE誘導・問い合わせ・予約までつなげて作ります。下は実際に公開・運用中のサイト。スマホでも崩れず、コンテンツが毎日増える仕組みごと用意しています。</p>
-    <figure class="shot site">
-      <img src="./assets/work-site.webp" alt="制作・運用中のサイトの画面" width="1000" height="625" loading="lazy">
-      <figcaption>公開・運用中のサイト</figcaption>
-    </figure>
-  </section>
-
-  <!-- ===== 脇役：コンテンツ制作（AI画像） ===== -->
-  <section class="rv">
-    <p class="idx">04</p>
-    <p class="cat">制作コストを減らす — AI画像・コンテンツ</p>
-    <h2>モデル撮影なしで、<br>素材を量産する</h2>
-    <p class="note">この9枚は全員同一人物で、全員実在しません。撮影費をかけずに、同じ顔でSNS投稿・広告素材・商品イメージを必要なだけ作れます。SNSアカウントとして実際に運用中です。</p>
-    <figure class="shot faces">
-      <img src="./assets/grid.webp" alt="AIで生成した同一人物の顔グリッド9枚" width="1080" height="1080" loading="lazy">
-      <figcaption>同一人物 × 9シーン / すべてAI生成</figcaption>
-    </figure>
-  </section>
-
-  <section class="about rv">
-    <p>大阪で、業務改善とWebとAIをひとりでやっています。「うちのこの作業、なんとかならん？」くらいの雑な相談が、いちばん好きです。</p>
-  </section>
-
-  <section class="contact rv">
-    <p class="lead">飲みの席で聞きそびれたことは、こちらへ。気軽な相談で大丈夫です。</p>
-    <div class="links">
-      <span class="soon"><b>X（DM）</b><span>準備中</span></span>
-      <span class="soon"><b>メール</b><span>準備中</span></span>
+  <!-- ===== CTA ===== -->
+  <section class="cta wrap rv">
+    <p>「こんなことできる？」の<br>段階で大丈夫です。</p>
+    <p class="small">その場で、作り方と現実的な金額を一緒に考えます。</p>
+    <div class="cta-btns">
+      <span class="btn btn-soon">連絡先：準備中</span>
     </div>
   </section>
 </main>
 
-<footer>KENTA F. — ALL PORTRAIT IMAGES ARE AI-GENERATED</footer>
+<footer>KENTA FUSHIMI ・ OSAKA</footer>
 
 <script>
 (function () {
   "use strict";
   document.documentElement.classList.add("js");
 
-  // スクロールリビール
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { rootMargin: "0px 0px 120px 0px", threshold: 0.1 });
+  }, { rootMargin: "0px 0px 120px 0px", threshold: 0.08 });
   document.querySelectorAll(".rv").forEach(function (el) { io.observe(el); });
 
-  // ===== 商品登録自動化デモ データ =====
   var DATA = [
-    {
-      label: "革財布", thumb: "革財布",
-      memo: "ヌメ革の二つ折り、手のひらサイズ、キャメル色。",
-      name: "本革 ミニ財布 二つ折り ヌメ革 コンパクト キャメル メンズ レディース",
-      desc: "使うほどに色が深まるヌメ革の二つ折り財布。手のひらに収まるコンパクト設計で、カードと小銭をまとめて持ち歩けます。ポケットにもすっきり収まるサイズ感です。",
-      cat: "バッグ・小物 ＞ 財布 ＞ 二つ折り財布",
-      tags: ["本革", "ヌメ革", "ミニ財布", "二つ折り", "コンパクト", "キャメル", "プレゼント"],
-      csv: 'item_no,item_name,price,stock,category,tags\nWLT-CML-001,本革ミニ財布 二つ折り ヌメ革 キャメル,4980,20,二つ折り財布,"本革,ヌメ革,コンパクト"'
-    },
-    {
-      label: "緑茶", thumb: "緑茶",
-      memo: "静岡産の有機緑茶、茶葉100g、深蒸し。",
-      name: "有機 深蒸し緑茶 静岡産 茶葉100g 化学肥料不使用 日本茶",
-      desc: "静岡県産の茶葉を有機栽培で育てた深蒸し緑茶です。じっくり蒸すことで渋みを抑え、まろやかな甘みと濃い水色が楽しめます。毎日の一杯や来客時のおもてなしにも。",
-      cat: "水・ソフトドリンク ＞ お茶 ＞ 緑茶・日本茶",
-      tags: ["有機", "深蒸し", "静岡産", "緑茶", "茶葉", "化学肥料不使用", "ギフト"],
-      csv: 'item_no,item_name,price,stock,category,tags\nTEA-SZ-100,有機深蒸し緑茶 静岡産 茶葉100g,1280,50,緑茶・日本茶,"有機,深蒸し,静岡産"'
-    },
-    {
-      label: "イヤホン", thumb: "イヤホン",
-      memo: "Bluetooth5.3、ノイキャン付き、充電ケース、黒。",
-      name: "ワイヤレスイヤホン Bluetooth5.3 ノイズキャンセリング 充電ケース付き ブラック",
-      desc: "Bluetooth5.3対応で接続が安定したワイヤレスイヤホン。周囲の音を抑えるノイズキャンセリング機能を搭載し、通勤や在宅ワークの集中に役立ちます。充電ケース付きで外出先でも安心です。",
-      cat: "スマホ・タブレット ＞ オーディオ ＞ ワイヤレスイヤホン",
-      tags: ["Bluetooth5.3", "ノイズキャンセリング", "ワイヤレス", "充電ケース付き", "ブラック", "通勤"],
-      csv: 'item_no,item_name,price,stock,category,tags\nEAR-BK-53,ワイヤレスイヤホン BT5.3 ノイキャン ブラック,3680,35,ワイヤレスイヤホン,"Bluetooth5.3,ノイキャン,充電ケース付き"'
-    }
+    { label:"革財布", thumb:"革財布", memo:"ヌメ革の二つ折り、手のひらサイズ、キャメル色。",
+      name:"本革 ミニ財布 二つ折り ヌメ革 コンパクト キャメル メンズ レディース",
+      desc:"使うほどに色が深まるヌメ革の二つ折り財布。手のひらに収まるコンパクト設計で、カードと小銭をまとめて持ち歩けます。ポケットにもすっきり収まるサイズ感です。",
+      cat:"バッグ・小物 ＞ 財布 ＞ 二つ折り財布",
+      tags:["本革","ヌメ革","ミニ財布","二つ折り","コンパクト","キャメル","プレゼント"],
+      csv:'item_no,item_name,price,stock,category,tags\nWLT-CML-001,本革ミニ財布 二つ折り ヌメ革 キャメル,4980,20,二つ折り財布,"本革,ヌメ革,コンパクト"' },
+    { label:"緑茶", thumb:"緑茶", memo:"静岡産の有機緑茶、茶葉100g、深蒸し。",
+      name:"有機 深蒸し緑茶 静岡産 茶葉100g 化学肥料不使用 日本茶",
+      desc:"静岡県産の茶葉を有機栽培で育てた深蒸し緑茶です。じっくり蒸すことで渋みを抑え、まろやかな甘みと濃い水色が楽しめます。毎日の一杯や来客時のおもてなしにも。",
+      cat:"水・ソフトドリンク ＞ お茶 ＞ 緑茶・日本茶",
+      tags:["有機","深蒸し","静岡産","緑茶","茶葉","化学肥料不使用","ギフト"],
+      csv:'item_no,item_name,price,stock,category,tags\nTEA-SZ-100,有機深蒸し緑茶 静岡産 茶葉100g,1280,50,緑茶・日本茶,"有機,深蒸し,静岡産"' },
+    { label:"イヤホン", thumb:"イヤホン", memo:"Bluetooth5.3、ノイキャン付き、充電ケース、黒。",
+      name:"ワイヤレスイヤホン Bluetooth5.3 ノイズキャンセリング 充電ケース付き ブラック",
+      desc:"Bluetooth5.3対応で接続が安定したワイヤレスイヤホン。周囲の音を抑えるノイズキャンセリング機能を搭載し、通勤や在宅ワークの集中に役立ちます。充電ケース付きで外出先でも安心です。",
+      cat:"スマホ・タブレット ＞ オーディオ ＞ ワイヤレスイヤホン",
+      tags:["Bluetooth5.3","ノイズキャンセリング","ワイヤレス","充電ケース付き","ブラック","通勤"],
+      csv:'item_no,item_name,price,stock,category,tags\nEAR-BK-53,ワイヤレスイヤホン BT5.3 ノイキャン ブラック,3680,35,ワイヤレスイヤホン,"Bluetooth5.3,ノイキャン,充電ケース付き"' }
   ];
 
-  var cur = 0, running = false;
-  var tabs = document.getElementById("tabs");
-  var $memo = document.getElementById("memo");
-  var $thumb = document.getElementById("thumb");
-  var $out = document.getElementById("out");
-  var $run = document.getElementById("run");
-  var rows = Array.prototype.slice.call(document.querySelectorAll(".row"));
+  var cur=0, running=false;
+  var tabs=document.getElementById("tabs"), $memo=document.getElementById("memo"), $thumb=document.getElementById("thumb");
+  var $out=document.getElementById("out"), $run=document.getElementById("run");
+  var rows=Array.prototype.slice.call(document.querySelectorAll(".orow"));
 
-  DATA.forEach(function (d, i) {
-    var b = document.createElement("button");
-    b.className = "tab" + (i === 0 ? " on" : "");
-    b.textContent = d.label;
-    b.addEventListener("click", function () { select(i); });
+  DATA.forEach(function (d,i){
+    var b=document.createElement("button");
+    b.className="tab"+(i===0?" on":""); b.textContent=d.label;
+    b.addEventListener("click", function(){ select(i); });
     tabs.appendChild(b);
   });
-
-  function select(i) {
-    cur = i;
-    Array.prototype.forEach.call(tabs.children, function (c, j) { c.classList.toggle("on", j === i); });
-    $thumb.innerHTML = DATA[i].thumb;
-    $memo.textContent = DATA[i].memo;
-    reset();
+  function select(i){
+    cur=i;
+    Array.prototype.forEach.call(tabs.children, function(c,j){ c.classList.toggle("on", j===i); });
+    $thumb.innerHTML=DATA[i].thumb; $memo.textContent=DATA[i].memo; reset();
   }
-  function reset() {
-    $out.classList.remove("show");
-    rows.forEach(function (r) { r.classList.remove("in"); });
-    $run.disabled = false;
-    $run.textContent = "AIで生成する";
-  }
+  function reset(){ $out.classList.remove("show"); rows.forEach(function(r){r.classList.remove("in");}); $run.disabled=false; $run.textContent="AIで生成する"; }
 
-  $run.addEventListener("click", function () {
-    if (running) return;
-    running = true;
-    $run.disabled = true;
-    $run.textContent = "解析中…";
-    var d = DATA[cur];
-    document.getElementById("o-name").textContent = d.name;
-    document.getElementById("o-desc").textContent = d.desc;
-    document.getElementById("o-cat").textContent = d.cat;
-    var tg = document.getElementById("o-tags");
-    tg.innerHTML = "";
-    d.tags.forEach(function (t) { var s = document.createElement("span"); s.textContent = t; tg.appendChild(s); });
-    document.getElementById("o-csv").textContent = d.csv;
-
-    var reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
-    setTimeout(function () {
+  $run.addEventListener("click", function(){
+    if(running) return; running=true; $run.disabled=true; $run.textContent="解析中…";
+    var d=DATA[cur];
+    document.getElementById("o-name").textContent=d.name;
+    document.getElementById("o-desc").textContent=d.desc;
+    document.getElementById("o-cat").textContent=d.cat;
+    var tg=document.getElementById("o-tags"); tg.innerHTML="";
+    d.tags.forEach(function(t){ var s=document.createElement("span"); s.textContent=t; tg.appendChild(s); });
+    document.getElementById("o-csv").textContent=d.csv;
+    var reduce=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+    setTimeout(function(){
       $out.classList.add("show");
-      rows.forEach(function (r, k) {
-        setTimeout(function () { r.classList.add("in"); }, reduce ? 0 : k * 260);
-      });
-      var done = reduce ? 0 : rows.length * 260 + 200;
-      setTimeout(function () { $run.textContent = "完了"; running = false; }, done);
-    }, reduce ? 0 : 600);
+      rows.forEach(function(r,k){ setTimeout(function(){ r.classList.add("in"); }, reduce?0:k*240); });
+      setTimeout(function(){ $run.textContent="完了"; running=false; }, reduce?0:rows.length*240+200);
+    }, reduce?0:550);
   });
 
-  document.getElementById("dl").addEventListener("click", function () {
-    var blob = new Blob(["﻿" + DATA[cur].csv], { type: "text/csv;charset=utf-8" });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement("a");
-    a.href = url; a.download = "product_" + DATA[cur].label + "_sample.csv";
-    document.body.appendChild(a); a.click();
-    document.body.removeChild(a); URL.revokeObjectURL(url);
+  document.getElementById("dl").addEventListener("click", function(){
+    var blob=new Blob(["﻿"+DATA[cur].csv], {type:"text/csv;charset=utf-8"});
+    var url=URL.createObjectURL(blob), a=document.createElement("a");
+    a.href=url; a.download="product_"+DATA[cur].label+"_sample.csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
   });
 
   select(0);

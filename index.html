@@ -72,6 +72,27 @@ h2{font-family:var(--serif);font-weight:600;font-size:clamp(20px,5.5vw,28px);lin
 .open-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:15px;border-radius:8px;background:var(--ink);color:var(--paper);font-size:14px;font-weight:600;letter-spacing:.1em;transition:background .2s}
 .open-site:hover .open-btn{background:#000}
 
+/* HPカード（横並び） */
+.cards{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 22px 10px;margin-top:24px;-webkit-overflow-scrolling:touch}
+.cards::-webkit-scrollbar{height:0}
+.card{flex:0 0 79%;scroll-snap-align:start;text-decoration:none;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column;transition:border-color .25s,transform .25s,box-shadow .25s}
+.card:hover{border-color:var(--shu);transform:translateY(-2px);box-shadow:0 18px 36px -22px rgba(40,38,30,.4)}
+.card img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1px solid var(--line);background:var(--panel)}
+.card-body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:7px;flex:1}
+.card-tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--shu)}
+.card-body h3{font-family:var(--serif);font-size:16px;line-height:1.5;letter-spacing:.02em;font-weight:600}
+.card-body p{font-size:12px;color:var(--ink2);line-height:1.75;flex:1;margin:2px 0}
+.card-roles{display:flex;flex-wrap:wrap;gap:5px}
+.card-roles span{font-size:10px;color:var(--ink-dim);background:var(--panel);border:1px solid var(--line);padding:2px 7px;border-radius:12px}
+.card-open{font-size:12.5px;font-weight:600;color:var(--ink);letter-spacing:.06em;margin-top:6px;display:flex;align-items:center;gap:6px}
+.card-open::after{content:"→";color:var(--shu)}
+.swipe-hint{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--ink-dim);margin:4px 22px 0;max-width:760px;margin-left:auto;margin-right:auto}
+@media(min-width:680px){
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;max-width:760px;margin:24px auto 0;padding:0 22px}
+  .card{flex:none}
+  .swipe-hint{display:none}
+}
+
 /* 担当範囲・技術構成 */
 .specs{margin-top:24px;display:grid;gap:16px}
 .spec h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-dim);margin-bottom:8px;font-weight:400}
@@ -165,113 +186,48 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
 <main>
   <!-- ===== 代表作 ===== -->
   <section class="lead wrap rv">
-    <p class="eyebrow">SELECTED WORK</p>
-    <h2>つくったものを、<br>その場で開いて。</h2>
-    <p class="note" style="margin-top:12px">スクショではありません。下のサイトは、このページ上でそのまま開いて、全ページ触って回れます。</p>
+    <p class="eyebrow">WEB制作</p>
+    <h2>つくったサイトを、<br>その場で開いて。</h2>
+    <p class="note" style="margin-top:12px">スクショではありません。カードを押すと、このページ上でサイトが開いて、全ページ触って回れます。</p>
   </section>
 
-  <!-- PROJECT 01 -->
-  <article class="project wrap rv">
-    <span class="p-tag">PROJECT 01 ／ Webサイト制作</span>
-    <h3 class="p-title">Web制作の集客LP<br>「Aequiro」</h3>
-    <p class="p-why">「不透明なIT制作を、透明で誠実に」をコンセプトに、適正価格のWeb制作の問い合わせを集めるためのランディングページ。料金・選ばれる理由・制作の流れ・FAQまで、構成・コピー・デザイン・実装まで担当しました。下から<b>実際に開いて触れます</b>。</p>
-    <a class="open-site" href="./works/aequiro/" target="_blank" rel="noopener">
-      <figure class="p-shot">
-        <img src="./assets/work-aequiro.webp" alt="制作したWeb制作LP Aequiro の画面" width="1000" height="625" loading="lazy">
-      </figure>
-      <span class="open-btn">サイトを開いて触る　→</span>
+  <p class="swipe-hint rv">← 横にスワイプ →</p>
+  <div class="cards rv">
+    <a class="card" href="./works/aequiro/" target="_blank" rel="noopener">
+      <img src="./assets/work-aequiro.webp" alt="Web制作の集客LP Aequiro" width="1000" height="625" loading="lazy">
+      <div class="card-body">
+        <span class="card-tag">集客LP（実案件）</span>
+        <h3>Web制作の集客LP「Aequiro」</h3>
+        <p>適正価格のWeb制作の問い合わせを集めるLP。構成・コピー・デザイン・実装まで担当。</p>
+        <div class="card-roles"><span>Next.js</span><span>コピー</span><span>デザイン</span></div>
+        <span class="card-open">サイトを開く</span>
+      </div>
     </a>
-    <p class="p-cap">このサイト上で開けます（実案件のLP）</p>
-    <div class="specs">
-      <div class="spec">
-        <h4>担当した範囲</h4>
-        <div class="role-row"><span>企画・構成</span><span>コピーライティング</span><span>デザイン</span><span>実装</span><span>公開</span></div>
+    <a class="card" href="./works/cabaret/" target="_blank" rel="noopener">
+      <img src="./assets/work-cabaret.webp" alt="高級ラウンジのWebサイト CLUB AURORA" width="1000" height="625" loading="lazy">
+      <div class="card-body">
+        <span class="card-tag">Webサイト（全13ページ）</span>
+        <h3>高級ラウンジのWebサイト一式</h3>
+        <p>架空の「CLUB AURORA」を題材に全13ページを実装。人物写真もすべてAI生成。</p>
+        <div class="card-roles"><span>HTML/CSS/JS</span><span>AI画像</span><span>演出</span></div>
+        <span class="card-open">サイトを開く</span>
       </div>
-      <div class="spec">
-        <h4>技術構成</h4>
-        <p class="stack">Next.js ／ TypeScript ／ Tailwind CSS ／ レスポンシブ</p>
-      </div>
-    </div>
-  </article>
-
-  <!-- PROJECT 02 -->
-  <article class="project wrap rv">
-    <span class="p-tag">PROJECT 02 ／ Webアプリ</span>
-    <h3 class="p-title">AI転職エージェント<br>（Webアプリ）</h3>
-    <p class="p-why">AIが転職のヒアリング・求人マッチング・書類作成・面接対策まで一気通貫でサポートするWebアプリ。本来はログインが必要なアプリですが、ログイン後の<b>管理画面（求人一覧・書類作成・面接対策・応募管理）まで、このページ上で開いて触れます</b>。</p>
-    <a class="open-site" href="./works/aijob/" target="_blank" rel="noopener">
-      <figure class="p-shot">
-        <img src="./assets/work-aijob.webp" alt="制作したWebアプリ AI転職エージェントの画面" width="1000" height="625" loading="lazy">
-      </figure>
-      <span class="open-btn">トップ画面を開く　→</span>
     </a>
-    <p class="p-cap" style="display:flex;gap:14px;flex-wrap:wrap">
-      <a href="./works/aijob/jobs/" target="_blank" rel="noopener" style="color:var(--shu);text-decoration:underline">▶ 管理画面（アプリ内）を開く</a>
-      <span>ログイン後の画面をデモ表示</span>
-    </p>
-    <div class="specs">
-      <div class="spec">
-        <h4>担当した範囲</h4>
-        <div class="role-row"><span>企画・設計</span><span>UI実装</span><span>DB設計</span><span>認証</span><span>AI連携</span><span>ダッシュボード</span></div>
+    <a class="card" href="./works/mens/" target="_blank" rel="noopener">
+      <img src="./assets/work-mens.webp" alt="口コミレビューメディアサイト" width="1000" height="625" loading="lazy">
+      <div class="card-body">
+        <span class="card-tag">Webサイト＋管理システム</span>
+        <h3>口コミレビューメディアサイト</h3>
+        <p>レビューを管理画面から増やせるDB連携メディア。会員・権限・運用まで構築。</p>
+        <div class="card-roles"><span>Next.js</span><span>Supabase</span><span>管理画面</span></div>
+        <span class="card-open">サイトを開く</span>
       </div>
-      <div class="spec">
-        <h4>技術構成</h4>
-        <p class="stack">Next.js ／ TypeScript ／ Supabase（DB・認証）／ LLM API（ヒアリング・書類生成）</p>
-      </div>
-    </div>
-  </article>
-
-  <!-- PROJECT 03 -->
-  <article class="project wrap rv">
-    <span class="p-tag">PROJECT 03 ／ Webサイト制作</span>
-    <h3 class="p-title">高級ラウンジの<br>Webサイト一式</h3>
-    <p class="p-why">架空の高級ラウンジ「CLUB AURORA」を題材に、トップ・キャスト・スケジュール・ギャラリー・予約・採用まで全13ページをデザインから実装。中の人物写真もすべてAI生成です。下から<b>開いて、全ページ触って回れます</b>。</p>
-    <a class="open-site" href="./works/cabaret/" target="_blank" rel="noopener">
-      <figure class="p-shot">
-        <img src="./assets/work-cabaret.webp" alt="制作したWebサイト CLUB AURORA の画面" width="1000" height="625" loading="lazy">
-      </figure>
-      <span class="open-btn">サイトを開いて触る　→</span>
     </a>
-    <p class="p-cap">このサイト上で公開中・全13ページ閲覧可（架空店舗のサンプル）</p>
-    <div class="specs">
-      <div class="spec">
-        <h4>担当した範囲</h4>
-        <div class="role-row"><span>企画・構成</span><span>デザイン</span><span>全13ページ実装</span><span>AI画像生成</span><span>スクロール演出</span><span>公開</span></div>
-      </div>
-      <div class="spec">
-        <h4>技術構成</h4>
-        <p class="stack">HTML / CSS / JavaScript ／ レスポンシブ ／ スクロール連動アニメーション ／ AI画像（人物・店内）</p>
-      </div>
-    </div>
-  </article>
-
-  <!-- PROJECT 04 -->
-  <article class="project wrap rv">
-    <span class="p-tag">PROJECT 04 ／ Webサイト＋管理システム</span>
-    <h3 class="p-title">口コミレビュー<br>メディアサイト</h3>
-    <p class="p-why">エリア別・項目別で本音のレビューを探せる口コミメディア。記事・店舗・レビューを管理画面から増やせる“運用できる仕組み”ごと、データベース連携で構築。本来はサーバーが必要なサイトですが、下から<b>このページ上で開いて、ページ間を触って回れます</b>。</p>
-    <a class="open-site" href="./works/mens/" target="_blank" rel="noopener">
-      <figure class="p-shot">
-        <img src="./assets/work-mens.webp" alt="制作したレビューメディアサイトの画面" width="1000" height="625" loading="lazy">
-      </figure>
-      <span class="open-btn">サイトを開いて触る　→</span>
-    </a>
-    <p class="p-cap">このサイト上で開けます（DB連携サイトの画面を再現）</p>
-    <div class="specs">
-      <div class="spec">
-        <h4>担当した範囲</h4>
-        <div class="role-row"><span>企画</span><span>デザイン</span><span>フロント実装</span><span>DB設計</span><span>管理画面</span><span>会員・権限</span><span>公開・運用</span></div>
-      </div>
-      <div class="spec">
-        <h4>技術構成</h4>
-        <p class="stack">Next.js ／ TypeScript ／ Supabase（DB・認証）／ ロール権限つき管理画面</p>
-      </div>
-    </div>
-  </article>
+  </div>
 
   <!-- PROJECT 05 -->
   <article class="project wrap rv">
-    <span class="p-tag">PROJECT 05 ／ 業務自動化</span>
+    <span class="p-tag">業務自動化ツール</span>
     <h3 class="p-title">商品登録、1件30分の<br>手入力を消すツール</h3>
     <p class="p-why">ネット通販の出品は、1商品ごとに名前・説明・カテゴリ・タグを手で書き、モールごとのCSVに整える——これが地味に重い作業でした。写真と一言メモを渡すだけで、ここまで自動生成する仕組みを作りました。下のデモ、実際に動きます。CSVもダウンロードできます。</p>
 

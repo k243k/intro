@@ -106,6 +106,13 @@ h2{font-family:var(--serif);font-weight:600;font-size:clamp(20px,5.5vw,28px);lin
 .sns-do .d{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:var(--ink);line-height:1.7}
 .sns-do .d i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--shu);margin-top:9px}
 
+/* LINEボット チャットモック */
+.chat{margin-top:24px;max-width:420px;border:1px solid var(--line2);background:var(--panel);padding:20px 16px;display:flex;flex-direction:column;gap:11px;border-radius:12px}
+.chat .b{max-width:82%;padding:10px 14px;font-size:13px;line-height:1.65;border-radius:15px}
+.chat .user{align-self:flex-end;background:#06c755;color:#fff;border-bottom-right-radius:4px}
+.chat .bot{align-self:flex-start;background:var(--paper);border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
+.chat .bot::before{content:"AI";display:inline-block;margin-right:7px;font-size:9px;letter-spacing:.16em;color:var(--shu);border:1px solid var(--shu);padding:1px 5px;border-radius:3px;vertical-align:1px}
+
 /* 担当範囲・技術構成 */
 .specs{margin-top:24px;display:grid;gap:16px}
 .spec h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-dim);margin-bottom:8px;font-weight:400}
@@ -266,6 +273,29 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
     <p class="veri" style="margin-top:14px">※ 実際にTikTok・Instagramへ投稿したリールです。クライアント名は伏せています。AIで作った自分のキャラのSNS運用もしています。</p>
   </section>
 
+  <!-- AI × LINEボット構築 -->
+  <article class="project wrap rv">
+    <span class="p-tag">AI × LINEボット構築</span>
+    <h3 class="p-title">AI×LINEボット構築</h3>
+    <p class="p-why">お店やサービスのLINE公式アカウントに、AIで自動応答するボットを作ります。よくある質問・予約受付・顧客対応を24時間自動化。会話で終わらせず、予約や顧客情報を裏側の管理画面に残すところまで作ります。下はAIが応答する会話の例です。</p>
+    <div class="chat" role="img" aria-label="AI LINEボットの会話例">
+      <p class="b user">今日って何時までやってますか？</p>
+      <p class="b bot">本日は22時まで営業しています。ラストオーダーは21時30分です。</p>
+      <p class="b user">2名、20時で予約できますか？</p>
+      <p class="b bot">ご予約承れます。お名前をお伺いできますか？（このあと予約として管理画面に登録されます）</p>
+    </div>
+    <div class="specs">
+      <div class="spec">
+        <h4>できること</h4>
+        <div class="role-row"><span>AI自動応答</span><span>FAQ対応</span><span>予約受付</span><span>顧客情報の登録</span><span>有人への切替</span></div>
+      </div>
+      <div class="spec">
+        <h4>技術構成</h4>
+        <p class="stack">LINE Messaging API ／ LLM（自動応答）／ 予約・顧客管理の連携</p>
+      </div>
+    </div>
+  </article>
+
   <!-- AI画像生成 -->
   <article class="project wrap rv">
     <span class="p-tag">AI画像生成</span>
@@ -346,7 +376,7 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
     <p class="eyebrow">ALSO AVAILABLE</p>
     <h2>ほかにも、こんなものを。</h2>
     <div class="more-grid">
-      <div>LINE受付・予約<small>自動応答から顧客管理まで</small></div>
+      <div>企業サイト<small>会社案内・問い合わせ</small></div>
       <div>書類の読み取り<small>請求書・注文書をデータ化</small></div>
       <div>データ収集・集計<small>市場価格を24時間自動収集</small></div>
       <div>管理画面の構築<small>一覧・検索・CSV・権限</small></div>

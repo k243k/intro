@@ -112,6 +112,16 @@ h2{font-family:var(--serif);font-weight:600;font-size:clamp(20px,5.5vw,28px);lin
 .chat .user{align-self:flex-end;background:#06c755;color:#fff;border-bottom-right-radius:4px}
 .chat .bot{align-self:flex-start;background:var(--paper);border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
 .chat .bot::before{content:"AI";display:inline-block;margin-right:7px;font-size:9px;letter-spacing:.16em;color:var(--shu);border:1px solid var(--shu);padding:1px 5px;border-radius:3px;vertical-align:1px}
+.chat-log{display:flex;flex-direction:column;gap:11px;max-height:340px;overflow-y:auto;padding-right:2px}
+.chat-typing{align-self:flex-start;font-size:13px;color:var(--ink-dim);padding:4px 2px;letter-spacing:.2em}
+.chat-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.chat-chips button{font-size:11.5px;color:var(--ink2);background:var(--paper);border:1px solid var(--line2);border-radius:16px;padding:6px 12px;cursor:pointer;font-family:var(--sans)}
+.chat-chips button:active{transform:scale(.95)}
+.chat-input{display:flex;gap:8px;margin-top:4px}
+.chat-input input{flex:1;min-width:0;border:1px solid var(--line2);border-radius:20px;padding:10px 15px;font-size:13px;font-family:var(--sans);background:var(--paper);color:var(--ink)}
+.chat-input input:focus{outline:none;border-color:var(--shu)}
+.chat-input button{flex:none;border:none;border-radius:20px;padding:0 18px;background:#06c755;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+.chat-input button:disabled{opacity:.5}
 
 /* 担当範囲・技術構成 */
 .specs{margin-top:24px;display:grid;gap:16px}
@@ -277,12 +287,22 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
   <article class="project wrap rv">
     <span class="p-tag">AI × LINEボット構築</span>
     <h3 class="p-title">AI×LINEボット構築</h3>
-    <p class="p-why">お店やサービスのLINE公式アカウントに、AIで自動応答するボットを作ります。よくある質問・予約受付・顧客対応を24時間自動化。会話で終わらせず、予約や顧客情報を裏側の管理画面に残すところまで作ります。下はAIが応答する会話の例です。</p>
-    <div class="chat" role="img" aria-label="AI LINEボットの会話例">
-      <p class="b user">今日って何時までやってますか？</p>
-      <p class="b bot">本日は22時まで営業しています。ラストオーダーは21時30分です。</p>
-      <p class="b user">2名、20時で予約できますか？</p>
-      <p class="b bot">ご予約承れます。お名前をお伺いできますか？（このあと予約として管理画面に登録されます）</p>
+    <p class="p-why">お店やサービスのLINE公式アカウントに、AIで自動応答するボットを作ります。よくある質問・予約受付・顧客対応を24時間自動化。会話で終わらせず、予約や顧客情報を裏側の管理画面に残すところまで作ります。下のチャットは<b>実際に入力して動かせます</b>。話しかけてみてください。</p>
+    <p class="touch" style="margin-bottom:8px">▶ 実際に入力できます（架空の飲食店の受付ボット）</p>
+    <div class="chat">
+      <div class="chat-log" id="chatLog" aria-live="polite">
+        <p class="b bot">こんにちは！「居酒屋 灯（あかり）」の受付ボットです。営業時間・ご予約・アクセスなど、お気軽にどうぞ。</p>
+      </div>
+      <div class="chat-chips" id="chatChips">
+        <button data-q="今日は何時まで営業してますか？">営業時間は？</button>
+        <button data-q="予約したいです">予約したい</button>
+        <button data-q="場所はどこですか？">アクセス</button>
+        <button data-q="予算はどれくらい？">予算は？</button>
+      </div>
+      <form class="chat-input" id="chatForm">
+        <input id="chatText" type="text" placeholder="メッセージを入力…" autocomplete="off" aria-label="メッセージ入力">
+        <button type="submit">送信</button>
+      </form>
     </div>
     <div class="specs">
       <div class="spec">
@@ -516,6 +536,76 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
   });
 
   select(0);
+
+  // ===== AI×LINEボット：ブラウザ内で動く応答デモ =====
+  (function () {
+    var log = document.getElementById("chatLog");
+    var form = document.getElementById("chatForm");
+    var input = document.getElementById("chatText");
+    var chips = document.getElementById("chatChips");
+    if (!log || !form) return;
+
+    // intent: キーワード→応答（架空の居酒屋「灯」）
+    var RULES = [
+      { k: ["何時", "営業", "時間", "やってる", "開いて", "閉ま", "ラスト"], a: "本日は17:00〜23:30の営業です（ラストオーダー23:00）。ご来店お待ちしています！" },
+      { k: ["予約", "席", "空いて", "取れ", "予約したい"], a: "ご予約承れます。ご希望の【日時】と【人数】を教えていただけますか？（実際の運用ではカレンダーと連携して空席確認まで自動で行います）" },
+      { k: ["場所", "どこ", "アクセス", "住所", "行き方", "駅"], a: "大阪・梅田駅から徒歩6分、〇〇ビル3Fです。地図のリンクもお送りできます🗺️" },
+      { k: ["予算", "いくら", "値段", "料金", "価格", "コース", "円"], a: "コースは3,500円〜（飲み放題付き4,500円〜）です。人数とご予算を教えていただければ、おすすめをご案内します。" },
+      { k: ["定休", "休み", "やすみ"], a: "定休日は月曜日です（祝日の場合は翌火曜）。" },
+      { k: ["メニュー", "おすすめ", "名物", "人気", "料理", "食べ"], a: "名物は「炙りしめ鯖」と「灯の唐揚げ」です。メニュー表もお送りできますよ。" },
+      { k: ["駐車", "車", "パーキング"], a: "近隣に提携コインパーキングがございます（2時間分サービス）。" },
+      { k: ["支払", "カード", "決済", "paypay", "現金"], a: "現金・各種カード・QR決済（PayPay等）すべて対応しています。" },
+      { k: ["個室", "貸切", "宴会"], a: "最大20名の個室、貸切も承れます。ご相談ください。" },
+      { k: ["ありがと", "thanks", "助か"], a: "こちらこそ、ありがとうございます！ご来店心よりお待ちしています😊" },
+      { k: ["こんにちは", "はじめまして", "もしもし", "hi", "hello"], a: "こんにちは！ご予約・営業時間・アクセスなど、何でも聞いてください。" }
+    ];
+    function reply(text) {
+      var t = text.toLowerCase();
+      for (var i = 0; i < RULES.length; i++) {
+        for (var j = 0; j < RULES[i].k.length; j++) {
+          if (t.indexOf(RULES[i].k[j].toLowerCase()) !== -1) return RULES[i].a;
+        }
+      }
+      return "ご質問ありがとうございます！その内容は担当者にも共有しますね。あわせて、ご予約・営業時間・アクセスなどもお気軽にどうぞ。";
+    }
+    function bubble(cls, text) {
+      var p = document.createElement("p");
+      p.className = "b " + cls;
+      p.textContent = text;
+      log.appendChild(p);
+      log.scrollTop = log.scrollHeight;
+      return p;
+    }
+    var busy = false;
+    function send(text) {
+      text = (text || "").trim();
+      if (!text || busy) return;
+      busy = true;
+      bubble("user", text);
+      var typing = document.createElement("p");
+      typing.className = "chat-typing";
+      typing.textContent = "···";
+      log.appendChild(typing);
+      log.scrollTop = log.scrollHeight;
+      var reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+      setTimeout(function () {
+        typing.remove();
+        bubble("bot", reply(text));
+        busy = false;
+      }, reduce ? 0 : 650);
+    }
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      send(input.value);
+      input.value = "";
+    });
+    if (chips) {
+      chips.addEventListener("click", function (e) {
+        var b = e.target.closest("button[data-q]");
+        if (b) send(b.getAttribute("data-q"));
+      });
+    }
+  })();
 })();
 </script>
 </body>

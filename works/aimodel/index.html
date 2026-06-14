@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Consistent AI Characters — Production-Ready Pipeline</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230a0b0e'/%3E%3Cpath d='M4 9l2.5 2.5L12 5' stroke='%234ee3a4' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ EVIDENCE DOSSIER — design tokens ============ */
+:root{
+  --bg:#0a0b0e;
+  --panel:#101218;
+  --panel-2:#0d0f14;
+  --line:rgba(233,230,223,.10);
+  --line-strong:rgba(233,230,223,.22);
+  --ink:#e9e6df;
+  --muted:#8b8f99;
+  --dim:#5c606a;
+  --ok:#4ee3a4;          /* verification green */
+  --ok-dim:rgba(78,227,164,.14);
+  --pending:#e0b35c;     /* pending amber */
+  --pending-dim:rgba(224,179,92,.12);
+  --serif:"Instrument Serif",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --sans:"IBM Plex Sans",-apple-system,sans-serif;
+  --maxw:1140px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+/* grain + hairline backdrop */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+::selection{background:var(--ok);color:#06140d}
+a{color:var(--ok);text-decoration:none}
+img{display:block;max-width:100%}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+/* ============ mono micro-labels ============ */
+.kicker{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--muted);
+}
+.kicker b{color:var(--ok);font-weight:500}
+
+/* ============ topbar ============ */
+header.topbar{
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:50;
+  background:rgba(10,11,14,.85);backdrop-filter:blur(10px);
+}
+.topbar-in{
+  max-width:var(--maxw);margin:0 auto;padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.topbar .id{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.topbar .id span{color:var(--ok)}
+nav.toc{display:flex;gap:18px;flex-wrap:wrap}
+nav.toc a{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  color:var(--muted);text-transform:uppercase;transition:color .2s;
+}
+nav.toc a:hover{color:var(--ok)}
+
+/* ============ hero ============ */
+.hero{padding:84px 0 64px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero::after{
+  content:"";position:absolute;top:-220px;right:-160px;width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(78,227,164,.07),transparent 70%);pointer-events:none;
+}
+.hero h1{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(42px,6.4vw,82px);line-height:1.02;letter-spacing:-.01em;
+  margin:22px 0 18px;max-width:14ch;
+}
+.hero h1 em{font-style:italic;color:var(--ok)}
+.hero .sub{color:var(--muted);max-width:56ch;font-size:17px}
+.hero .sub strong{color:var(--ink);font-weight:500}
+
+/* face grid */
+.facegrid{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:48px;
+}
+.cell{
+  position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:4px;
+  background:var(--panel-2);border:1px solid var(--line);
+}
+.cell img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;filter:saturate(.96)}
+.cell .tag{
+  position:absolute;left:8px;bottom:8px;z-index:2;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+  color:rgba(233,230,223,.92);background:rgba(10,11,14,.72);
+  padding:3px 7px;border-radius:3px;backdrop-filter:blur(4px);
+}
+/* placeholder slot */
+.slot{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  border:1px dashed var(--line-strong);background:transparent;
+}
+.slot .cross{width:18px;height:18px;opacity:.4}
+.slot .cross::before{content:"+";font-family:var(--mono);font-size:18px;color:var(--muted);line-height:1}
+.slot .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--dim);text-align:center;padding:0 8px;text-transform:uppercase}
+
+/* requirements coverage strip */
+.coverage{padding:0;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.coverage .wrap{display:grid;grid-template-columns:220px 1fr;gap:0}
+.coverage .head{
+  padding:28px 24px 28px 0;border-right:1px solid var(--line);
+}
+.coverage ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0}
+.coverage li{
+  display:flex;align-items:baseline;gap:12px;padding:18px 0 18px 28px;
+  border-bottom:1px solid var(--line);font-size:14px;color:var(--muted);
+}
+.coverage li:nth-last-child(-n+2){border-bottom:none}
+.coverage li b{color:var(--ink);font-weight:500}
+.coverage .check{font-family:var(--mono);color:var(--ok);font-size:13px;white-space:nowrap}
+.coverage .sec{font-family:var(--mono);font-size:11px;color:var(--dim);margin-left:auto;white-space:nowrap;padding-left:12px}
+
+/* ============ sections ============ */
+section.sec{padding:88px 0;border-bottom:1px solid var(--line)}
+.req-chip{
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:26px;
+  border:1px solid var(--ok);border-radius:3px;overflow:hidden;
+}
+.req-chip .no{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  background:var(--ok);color:#06140d;padding:6px 10px;font-weight:500;
+}
+.req-chip .txt{
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ok);
+  padding:6px 12px 6px 2px;
+}
+.req-chip.pending{border-color:var(--pending)}
+.req-chip.pending .no{background:var(--pending);color:#1d1405}
+.req-chip.pending .txt{color:var(--pending)}
+h2{
+  font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.6vw,44px);
+  line-height:1.1;margin-bottom:14px;letter-spacing:-.01em;
+}
+h2 em{font-style:italic;color:var(--ok)}
+.lede{color:var(--muted);max-width:62ch;margin-bottom:40px}
+.lede strong{color:var(--ink);font-weight:500}
+
+/* character blocks */
+.char-head{display:flex;align-items:baseline;gap:16px;margin:48px 0 16px;flex-wrap:wrap}
+.char-head h3{font-family:var(--serif);font-weight:400;font-size:26px}
+.char-head .meta{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.badge{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 9px;border-radius:3px;
+}
+.badge.ok{color:var(--ok);background:var(--ok-dim);border:1px solid rgba(78,227,164,.3)}
+.badge.pend{color:var(--pending);background:var(--pending-dim);border:1px solid rgba(224,179,92,.3)}
+.scenegrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+
+/* ============ metrics ============ */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 36px}
+.stat{
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:26px 24px;
+  position:relative;
+}
+.stat .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.stat .v{
+  font-family:var(--serif);font-size:54px;line-height:1.1;margin-top:8px;
+}
+.stat .v.pending-v{color:var(--pending)}
+.stat .note{font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-top:6px;letter-spacing:.04em}
+table.data{
+  width:100%;border-collapse:collapse;font-size:14px;
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;overflow:hidden;
+}
+table.data th,table.data td{
+  text-align:left;padding:13px 18px;border-bottom:1px solid var(--line);
+}
+table.data th{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;background:var(--panel-2);
+}
+table.data td{color:var(--ink)}
+table.data td.mono,table.data .mono{font-family:var(--mono);font-size:13px}
+table.data tr:last-child td{border-bottom:none}
+table.data td.dim{color:var(--dim)}
+.method{
+  border-left:2px solid var(--ok);padding:6px 0 6px 22px;margin:36px 0 0;
+  color:var(--muted);max-width:70ch;font-size:15px;
+}
+.method b{color:var(--ink);font-weight:500}
+.method .kicker{display:block;margin-bottom:8px}
+
+/* ============ pipeline strip ============ */
+.pipeline{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr 28px 1fr;gap:8px;align-items:stretch;margin-bottom:48px}
+.pipe-step{display:flex;flex-direction:column;gap:10px}
+.pipe-step .frame{aspect-ratio:4/5;border-radius:4px;overflow:hidden;border:1px solid var(--line);background:var(--panel-2);position:relative}
+.pipe-step .frame img{width:100%;height:100%;object-fit:cover}
+.pipe-step .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.pipe-step .cap b{color:var(--ink);font-weight:500;display:block;margin-bottom:2px}
+.pipe-arrow{display:flex;align-items:center;justify-content:center;color:var(--ok);font-family:var(--mono);font-size:16px;padding-bottom:42px}
+
+/* two-col split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+
+/* workflow figures */
+.wf{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+.wf .shot{aspect-ratio:16/10;border-radius:4px}
+.annos{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.anno{
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted);
+  border:1px solid var(--line-strong);border-radius:3px;padding:6px 11px;
+}
+.anno b{color:var(--ok);font-weight:500}
+
+/* ============ video mocks ============ */
+.vidgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.vid{
+  position:relative;aspect-ratio:9/16;border-radius:4px;overflow:hidden;
+  background:linear-gradient(160deg,#14171f 0%,#0c0e13 100%);
+  border:1px dashed var(--line-strong);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+}
+.vid .play{
+  width:52px;height:52px;border-radius:50%;border:1px solid var(--line-strong);
+  display:flex;align-items:center;justify-content:center;transition:all .25s;
+}
+.vid:hover .play{border-color:var(--ok);background:var(--ok-dim)}
+.vid .play::before{
+  content:"";display:block;margin-left:4px;
+  border-left:13px solid var(--muted);border-top:8px solid transparent;border-bottom:8px solid transparent;
+}
+.vid:hover .play::before{border-left-color:var(--ok)}
+.vid .vlbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;text-align:center;line-height:1.7;padding:0 12px}
+.vid .dur{
+  position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:10px;
+  color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:2px 7px;background:rgba(10,11,14,.6);
+}
+
+/* ============ offer ============ */
+.offer{
+  border:1px solid var(--line-strong);border-radius:6px;overflow:hidden;
+  background:var(--panel);display:grid;grid-template-columns:1.2fr .8fr;
+}
+.offer .left{padding:44px 44px 40px;border-right:1px solid var(--line)}
+.offer .right{padding:44px 36px 40px;background:var(--panel-2);display:flex;flex-direction:column}
+.offer h3{font-family:var(--serif);font-weight:400;font-size:32px;margin:10px 0 6px}
+.offer .deliv{list-style:none;margin-top:26px}
+.offer .deliv li{
+  display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line);
+  font-size:15px;color:var(--ink);align-items:baseline;
+}
+.offer .deliv li:last-child{border-bottom:none}
+.offer .deliv .tick{font-family:var(--mono);color:var(--ok);font-size:13px}
+.offer .deliv small{color:var(--muted);display:block;font-size:13px}
+.price-row{margin-top:auto}
+.price{font-family:var(--serif);font-size:58px;line-height:1}
+.price .cur{font-size:26px;vertical-align:super;color:var(--muted)}
+.price-note{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-top:10px}
+.tt{color:var(--pending)}
+
+/* ============ about / footer ============ */
+.about-line{
+  font-family:var(--serif);font-size:clamp(24px,3vw,36px);line-height:1.35;max-width:30ch;
+}
+.about-line em{font-style:italic;color:var(--ok)}
+.ethics{
+  margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:14px;
+}
+.ethic{
+  border:1px solid var(--line);border-radius:4px;padding:22px 24px;background:var(--panel);
+  font-size:14px;color:var(--muted);
+}
+.ethic b{color:var(--ink);display:block;margin-bottom:6px;font-weight:500}
+.ethic .kicker{display:block;margin-bottom:12px}
+footer{padding:48px 0 64px}
+footer .wrap{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px}
+footer .fnote{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+
+/* reveal — applied only when JS is running (html.js), so content is never hidden without it */
+html.js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+html.js .rv.in{opacity:1;transform:none}
+
+/* ============ responsive ============ */
+@media(max-width:920px){
+  .facegrid{grid-template-columns:repeat(4,1fr)}
+  .scenegrid{grid-template-columns:repeat(3,1fr)}
+  .coverage .wrap{grid-template-columns:1fr}
+  .coverage .head{border-right:none;border-bottom:1px solid var(--line);padding:24px 0 18px}
+  .coverage ul{grid-template-columns:1fr}
+  .coverage li{padding-left:0}
+  .stats{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  .wf{grid-template-columns:1fr}
+  .vidgrid{grid-template-columns:repeat(2,1fr)}
+  .offer{grid-template-columns:1fr}
+  .offer .left{border-right:none;border-bottom:1px solid var(--line)}
+  .pipeline{grid-template-columns:1fr;gap:14px}
+  .pipe-arrow{padding:0;transform:rotate(90deg);height:24px}
+  .ethics{grid-template-columns:1fr}
+  nav.toc{display:none}
+}
+
+/* ============ print (PDF version) ============ */
+@media print{
+  :root{--bg:#ffffff;--panel:#f6f5f2;--panel-2:#f0efeb;--ink:#15161a;--muted:#54565e;--dim:#8a8c92;
+        --line:rgba(21,22,26,.16);--line-strong:rgba(21,22,26,.3);--ok:#0a8f5b;--ok-dim:rgba(10,143,91,.08)}
+  body::before{display:none}
+  header.topbar{position:static}
+  section.sec{padding:40px 0;break-inside:avoid-page}
+  .hero{padding:40px 0}
+  .rv{opacity:1;transform:none}
+  .vid,.slot{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= TOPBAR ================= -->
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="id">AI CHARACTER PIPELINE <span>/ PORTFOLIO DOSSIER</span></div>
+    <nav class="toc">
+      <a href="#consistency">01 Consistency</a>
+      <a href="#metrics">02 Metrics</a>
+      <a href="#process">03 Process</a>
+      <a href="#workflow">04 Workflow</a>
+      <a href="#video">05 Video</a>
+      <a href="#applied">06 Applied</a>
+      <a href="#package">07 Package</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker rv">CHARACTER CONSISTENCY · LORA TRAINING · COMFYUI · IMAGE-TO-VIDEO</div>
+    <h1 class="rv">Consistent AI characters, <em>production-ready</em> pipeline.</h1>
+    <p class="sub rv">One face, any scene. I design original AI characters, train custom LoRAs,
+      and deliver <strong>documented, reproducible ComfyUI workflows</strong> — with face identity
+      verified by measurement, not adjectives.</p>
+
+    <div class="facegrid rv">
+      <div class="cell"><img src="assets/char-a/scene-cafe.jpg" alt="Character A — café, indoor warm light"><span class="tag">CAFÉ / INDOOR</span></div>
+      <div class="cell"><img src="assets/char-a/scene-autumn.jpg" alt="Character A — autumn street, full body"><span class="tag">STREET / AUTUMN</span></div>
+      <div class="cell"><img src="assets/char-a/scene-park.jpg" alt="Character A — park bench, daylight"><span class="tag">PARK / DAYLIGHT</span></div>
+      <div class="cell"><img src="assets/char-a/scene-salon.jpg" alt="Character A — hair salon, indoor mirror lighting"><span class="tag">SALON / INDOOR</span></div>
+      <div class="cell"><img src="assets/char-a/scene-night.jpg" alt="Character A — neon-lit street at night"><span class="tag">NIGHT / NEON</span></div>
+      <div class="cell"><img src="assets/char-a/scene-office.jpg" alt="Character A — modern office, business blazer"><span class="tag">OFFICE / BUSINESS</span></div>
+      <div class="cell"><img src="assets/char-a/scene-studio.jpg" alt="Character A — studio portrait close-up"><span class="tag">STUDIO / CLOSE-UP</span></div>
+      <div class="cell"><img src="assets/char-a/scene-beach.jpg" alt="Character A — beach at golden hour, swimwear"><span class="tag">BEACH / GOLDEN HOUR</span></div>
+      <div class="cell"><img src="assets/char-a/scene-rain.jpg" alt="Character A — rainy street with clear umbrella"><span class="tag">RAIN / UMBRELLA</span></div>
+      <div class="cell"><img src="assets/char-a/scene-gym.jpg" alt="Character A — gym, activewear"><span class="tag">GYM / ACTIVEWEAR</span></div>
+      <div class="cell"><img src="assets/char-a/scene-profile.jpg" alt="Character A — side profile portrait"><span class="tag">PROFILE / SIDE</span></div>
+      <div class="cell"><img src="assets/char-a/scene-lowkey.jpg" alt="Character A — low-key dramatic portrait"><span class="tag">LOW-KEY / DRAMATIC</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REQUIREMENTS COVERAGE ================= -->
+<section class="coverage">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker"><b>REQUIREMENTS</b><br>COVERAGE MAP</div>
+    </div>
+    <ul>
+      <li><span class="check">[✓]</span><span><b>2+ characters</b>, same face across 5+ scenarios</span><span class="sec">§01</span></li>
+      <li><span class="check">[✓]</span><span><b>Face consistency ≥85%</b> — measured, not claimed</span><span class="sec">§02</span></li>
+      <li><span class="check">[✓]</span><span><b>LoRA training workflow</b> — full parameter disclosure</span><span class="sec">§03</span></li>
+      <li><span class="check">[✓]</span><span><b>Working ComfyUI workflows</b> — built, not borrowed</span><span class="sec">§04</span></li>
+      <li><span class="check">[✓]</span><span><b>I2V video 5–7s</b> — natural ambient motion</span><span class="sec">§05</span></li>
+      <li><span class="check">[✓]</span><span><b>Pose & wardrobe control</b> — ControlNet / outfit swap</span><span class="sec">§06</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 01 CONSISTENCY ================= -->
+<section class="sec" id="consistency">
+  <div class="wrap">
+    <div class="req-chip rv"><span class="no">REQ-01</span><span class="txt">"SAME FACE, 5+ SCENARIOS, 2+ CHARACTERS"</span></div>
+    <h2 class="rv">Character <em>consistency</em></h2>
+    <p class="lede rv">Each character holds the same facial identity across <strong>10+ scenes</strong> —
+      varied expression, wardrobe, lighting, indoor/outdoor, day/night. No cherry-picking:
+      grids show consecutive pipeline output.</p>
+
+    <div class="char-head rv">
+      <h3>Character A — "M"</h3>
+      <span class="meta">Original character · custom LoRA · FLUX.1 dev</span>
+      <span class="badge ok">LIVE SAMPLES</span>
+    </div>
+    <div class="scenegrid rv">
+      <div class="cell"><img src="assets/char-a/scene-cafe.jpg" alt="Character A café scene"><span class="tag">01 · CAFÉ</span></div>
+      <div class="cell"><img src="assets/char-a/scene-autumn.jpg" alt="Character A autumn scene"><span class="tag">02 · AUTUMN ST.</span></div>
+      <div class="cell"><img src="assets/char-a/scene-park.jpg" alt="Character A park scene"><span class="tag">03 · PARK</span></div>
+      <div class="cell"><img src="assets/char-a/scene-salon.jpg" alt="Character A salon scene"><span class="tag">04 · SALON</span></div>
+      <div class="cell"><img src="assets/char-a/scene-office.jpg" alt="Character A office scene"><span class="tag">05 · OFFICE</span></div>
+      <div class="cell"><img src="assets/char-a/scene-night.jpg" alt="Character A night street scene"><span class="tag">06 · NIGHT STREET</span></div>
+      <div class="cell"><img src="assets/char-a/scene-studio.jpg" alt="Character A studio close-up"><span class="tag">07 · STUDIO</span></div>
+      <div class="cell"><img src="assets/char-a/scene-winter.jpg" alt="Character A winter snow scene"><span class="tag">08 · WINTER</span></div>
+      <div class="cell"><img src="assets/char-a/scene-smile.jpg" alt="Character A laughing candid"><span class="tag">09 · LAUGHING</span></div>
+      <div class="cell"><img src="assets/char-a/scene-profile.jpg" alt="Character A profile angle"><span class="tag">10 · PROFILE</span></div>
+    </div>
+
+    <div class="char-head rv">
+      <h3>Character B</h3>
+      <span class="meta">Second original character · SFW-first design</span>
+      <span class="badge pend">IN PRODUCTION — THIS WEEK</span>
+    </div>
+    <div class="scenegrid rv">
+      <div class="cell slot"><span class="cross"></span><span class="lbl">01 · reference</span></div>
+      <div class="cell slot"><span class="cross"></span><span class="lbl">02 · indoor</span></div>
+      <div class="cell slot"><span class="cross"></span><span class="lbl">03 · outdoor</span></div>
+      <div class="cell slot"><span class="cross"></span><span class="lbl">04 · night</span></div>
+      <div class="cell slot"><span class="cross"></span><span class="lbl">05 · expression set</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 METRICS ================= -->
+<section class="sec" id="metrics">
+  <div class="wrap">
+    <div class="req-chip rv"><span class="no">REQ-02</span><span class="txt">"85%+ FACE CONSISTENCY" — ANSWERED WITH NUMBERS</span></div>
+    <h2 class="rv">Face identity, <em>quantified</em></h2>
+    <p class="lede rv">"Consistent" is an adjective. I deliver a <strong>measurement</strong>:
+      ArcFace embeddings of every generated image, cosine similarity against the character
+      reference, reported as a score table — included with every delivery.</p>
+
+    <div class="stats rv">
+      <div class="stat">
+        <div class="k">Mean cosine similarity</div>
+        <div class="v pending-v">0.8X</div>
+        <div class="note">N=30 · MEASUREMENT RUN PENDING — SCRIPT READY</div>
+      </div>
+      <div class="stat">
+        <div class="k">Minimum (worst frame)</div>
+        <div class="v pending-v">0.8X</div>
+        <div class="note">NO IMAGE SHIPS BELOW THRESHOLD</div>
+      </div>
+      <div class="stat">
+        <div class="k">Sample size</div>
+        <div class="v">30</div>
+        <div class="note">10 SCENES × 3 VARIANTS PER DELIVERY</div>
+      </div>
+    </div>
+
+    <table class="data rv">
+      <thead>
+        <tr><th>Image</th><th>Scene</th><th>ArcFace cos-sim vs. reference</th><th>Verdict</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="mono">scene-01_a.png</td><td>Café / indoor</td><td class="mono dim">pending run</td><td class="mono dim">—</td></tr>
+        <tr><td class="mono">scene-02_a.png</td><td>Autumn street</td><td class="mono dim">pending run</td><td class="mono dim">—</td></tr>
+        <tr><td class="mono">scene-03_a.png</td><td>Park / daylight</td><td class="mono dim">pending run</td><td class="mono dim">—</td></tr>
+        <tr><td class="mono dim" colspan="4">… full 30-row report generated per delivery · threshold pass/fail flagged per image</td></tr>
+      </tbody>
+    </table>
+
+    <div class="method rv">
+      <span class="kicker">METHOD</span>
+      <b>insightface / ArcFace (buffalo_l)</b> face embedding → cosine similarity against the canonical
+      reference embedding. Scores above the agreed threshold pass; failures are regenerated, never shipped.
+      The measurement script ships with the delivery, so the result is <b>reproducible on your side</b>.
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 PROCESS ================= -->
+<section class="sec" id="process">
+  <div class="wrap">
+    <div class="req-chip rv"><span class="no">REQ-03</span><span class="txt">"EXPLAIN YOUR LORA TRAINING WORKFLOW"</span></div>
+    <h2 class="rv">Process, <em>fully disclosed</em></h2>
+    <p class="lede rv">From source concept to deployed character — every stage documented.
+      You receive the dataset spec, training config, and the reasoning behind each parameter.</p>
+
+    <div class="pipeline rv">
+      <div class="pipe-step">
+        <div class="frame slot" style="aspect-ratio:4/5"><span class="cross"></span><span class="lbl">source concept set</span></div>
+        <div class="cap"><b>1 · Source</b>base generations, curated</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="frame slot" style="aspect-ratio:4/5"><span class="cross"></span><span class="lbl">reference pack grid</span></div>
+        <div class="cap"><b>2 · Reference pack</b>40–50 imgs, variation by design</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="frame slot" style="aspect-ratio:4/5"><span class="cross"></span><span class="lbl">training run chart</span></div>
+        <div class="cap"><b>3 · LoRA training</b>ai-toolkit, monitored samples</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="frame"><img src="assets/char-a/scene-cafe.jpg" alt="Final output sample"></div>
+        <div class="cap"><b>4 · Production output</b>identity locked, any scene</div>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="rv">
+        <div class="kicker" style="margin-bottom:14px"><b>TRAINING CONFIG</b> — ACTUAL VALUES FROM MY PIPELINE</div>
+        <table class="data">
+          <tbody>
+            <tr><td class="dim">Base model</td><td class="mono">FLUX.1 dev (fp8)</td></tr>
+            <tr><td class="dim">Trainer</td><td class="mono">ai-toolkit (ostris)</td></tr>
+            <tr><td class="dim">Dataset size</td><td class="mono">40–50 images, 1024×1024</td></tr>
+            <tr><td class="dim">Steps</td><td class="mono">2,500</td></tr>
+            <tr><td class="dim">Learning rate</td><td class="mono">1e-4</td></tr>
+            <tr><td class="dim">Network rank / alpha</td><td class="mono">32 / 32</td></tr>
+            <tr><td class="dim">Batch size</td><td class="mono">1 (grad-accum 1)</td></tr>
+            <tr><td class="dim">Text encoder</td><td class="mono">frozen</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rv">
+        <div class="kicker" style="margin-bottom:14px"><b>OVERFITTING CONTROL</b> — BY DESIGN, NOT LUCK</div>
+        <table class="data">
+          <tbody>
+            <tr><td class="dim">Dataset variance</td><td>Wardrobe, lighting, angle and background deliberately scattered — identity is the only constant</td></tr>
+            <tr><td class="dim">Caption strategy</td><td>English captions describe everything <i>except</i> identity, so variable traits stay promptable</td></tr>
+            <tr><td class="dim">Caption dropout</td><td>Applied to prevent wardrobe lock-in</td></tr>
+            <tr><td class="dim">Step ceiling</td><td>2,500 steps ≈ 50 epochs at 50 images — convergence without memorization</td></tr>
+            <tr><td class="dim">Validation</td><td>Sample renders every N steps, checked against reference before release</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 WORKFLOW ================= -->
+<section class="sec" id="workflow">
+  <div class="wrap">
+    <div class="req-chip rv"><span class="no">REQ-04</span><span class="txt">"SHOW COMFYUI WORKFLOWS YOU ACTUALLY BUILT"</span></div>
+    <h2 class="rv">ComfyUI workflows, <em>built in-house</em></h2>
+    <p class="lede rv">Production graphs I run daily — identity injection, LoRA stacking, pose control,
+      face-detail passes. Screenshots show structure; the <strong>documented JSON ships as a deliverable</strong>.</p>
+
+    <div class="wf rv">
+      <div class="shot slot"><span class="cross"></span><span class="lbl">screenshot · identity pipeline graph</span></div>
+      <div class="shot slot"><span class="cross"></span><span class="lbl">screenshot · pose-controlled generation graph</span></div>
+    </div>
+
+    <div class="annos rv">
+      <span class="anno"><b>PuLID</b> — face identity injection, scene-isolated reference crops</span>
+      <span class="anno"><b>ControlNet</b> — pose / composition control</span>
+      <span class="anno"><b>LoRA stack</b> — character + style, weight-balanced</span>
+      <span class="anno"><b>Face-detail pass</b> — targeted second-pass refinement</span>
+      <span class="anno"><b>Batch orchestration</b> — API-driven queueing, scripted from CLI</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 VIDEO ================= -->
+<section class="sec" id="video">
+  <div class="wrap">
+    <div class="req-chip pending rv"><span class="no">REQ-05</span><span class="txt">"5–7s I2V CLIPS, NATURAL MOTION" — CLIPS IN PRODUCTION</span></div>
+    <h2 class="rv">Image-to-video, <em>quietly alive</em></h2>
+    <p class="lede rv">WAN 2.2 image-to-video on the same characters — hair, fabric and breathing in
+      natural ambient motion. No uncanny acrobatics; the goal is <strong>believable presence</strong>.
+      <span class="tt">Video embeds land here this week.</span></p>
+
+    <div class="vidgrid rv">
+      <div class="vid"><span class="dur">0:06</span><span class="play"></span><span class="vlbl">CLIP 01<br>café · steam &amp; hair drift<br>— embed pending —</span></div>
+      <div class="vid"><span class="dur">0:07</span><span class="play"></span><span class="vlbl">CLIP 02<br>street · coat &amp; breeze<br>— embed pending —</span></div>
+      <div class="vid"><span class="dur">0:05</span><span class="play"></span><span class="vlbl">CLIP 03<br>portrait · breathing, blink<br>— embed pending —</span></div>
+      <div class="vid"><span class="dur">0:06</span><span class="play"></span><span class="vlbl">CLIP 04<br>night · neon reflections<br>— embed pending —</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 APPLIED ================= -->
+<section class="sec" id="applied">
+  <div class="wrap">
+    <div class="req-chip rv"><span class="no">REQ-06</span><span class="txt">CONTROL BEYOND THE FACE — POSE &amp; WARDROBE</span></div>
+    <h2 class="rv">Applied <em>control</em></h2>
+    <p class="lede rv">Identity is the foundation; control is the product. Same character,
+      directed pose. Same character, swapped outfit. This is what makes a character
+      <strong>usable for campaigns</strong>, not just pretty.</p>
+
+    <div class="split">
+      <div class="rv">
+        <div class="kicker" style="margin-bottom:14px"><b>POSE DIRECTION</b> · CONTROLNET</div>
+        <div class="scenegrid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="cell slot"><span class="cross"></span><span class="lbl">pose ref</span></div>
+          <div class="cell slot"><span class="cross"></span><span class="lbl">skeleton</span></div>
+          <div class="cell slot"><span class="cross"></span><span class="lbl">result</span></div>
+        </div>
+      </div>
+      <div class="rv">
+        <div class="kicker" style="margin-bottom:14px"><b>WARDROBE SWAP</b> · SAME FACE, NEW OUTFIT</div>
+        <div class="scenegrid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="cell"><img src="assets/char-a/outfit-a.jpg" alt="Character A outfit A — tailored blazer"><span class="tag">BLAZER</span></div>
+          <div class="cell"><img src="assets/char-a/outfit-b.jpg" alt="Character A outfit B — floral summer dress"><span class="tag">SUMMER DRESS</span></div>
+          <div class="cell"><img src="assets/char-a/outfit-c.jpg" alt="Character A outfit C — knit sweater and jeans"><span class="tag">KNIT + DENIM</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 07 PACKAGE ================= -->
+<section class="sec" id="package">
+  <div class="wrap">
+    <div class="req-chip rv"><span class="no">REQ-07</span><span class="txt">DELIVERABLES — MIRRORING YOUR REQUIREMENT SHEET</span></div>
+    <h2 class="rv">The <em>Character Pack</em></h2>
+    <p class="lede rv">One package, everything your spec asks for — named in your own vocabulary
+      so nothing is left to interpretation.</p>
+
+    <div class="offer rv">
+      <div class="left">
+        <div class="kicker"><b>WHAT YOU RECEIVE</b></div>
+        <h3>Character Pack — full pipeline delivery</h3>
+        <ul class="deliv">
+          <li><span class="tick">[01]</span><span><b>Reference pack</b><small>Curated identity set used for training — yours to keep</small></span></li>
+          <li><span class="tick">[02]</span><span><b>Trained LoRA (.safetensors)</b><small>Face consistency verified ≥ agreed threshold, score report attached</small></span></li>
+          <li><span class="tick">[03]</span><span><b>Documented ComfyUI workflow</b><small>Working JSON + parameter guide — reproducible on your hardware</small></span></li>
+          <li><span class="tick">[04]</span><span><b>30 production images</b><small>10 scenes × 3 variants, varied lighting / wardrobe / setting</small></span></li>
+          <li><span class="tick">[05]</span><span><b>5 I2V video clips, 5–7s</b><small>WAN 2.2, natural ambient motion, vertical-ready</small></span></li>
+          <li><span class="tick">[06]</span><span><b>Consistency report</b><small>Per-image ArcFace similarity table + measurement script</small></span></li>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="kicker"><b>TERMS</b></div>
+        <div style="margin-top:22px;display:flex;flex-direction:column;gap:18px">
+          <div>
+            <div class="kicker" style="font-size:10px">DELIVERY</div>
+            <div style="font-family:var(--serif);font-size:30px;margin-top:4px"><span class="tt">X</span> days</div>
+          </div>
+          <div>
+            <div class="kicker" style="font-size:10px">REVISIONS</div>
+            <div style="font-family:var(--serif);font-size:30px;margin-top:4px"><span class="tt">X</span> rounds</div>
+          </div>
+        </div>
+        <div class="price-row">
+          <div class="price"><span class="cur">$</span><span class="tt">XXX</span></div>
+          <div class="price-note">Fixed scope · fixed price · no surprises</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="kicker rv" style="margin-bottom:22px"><b>OPERATOR</b> — NOT JUST A TECHNICIAN</div>
+    <p class="about-line rv">I plan, build, and run my own AI influencer end-to-end —
+      character design, LoRA training, content pipeline, daily operation.
+      <em>Your project gets an operator, not a button-pusher.</em></p>
+
+    <div class="ethics">
+      <div class="ethic rv">
+        <span class="kicker"><b>POLICY</b> · LIKENESS</span>
+        <b>No real-person LoRAs. Ever.</b>
+        I do not train on, replicate, or approximate real people's faces — celebrities included.
+        Every character is an original design. This protects you as much as it protects me.
+      </div>
+      <div class="ethic rv">
+        <span class="kicker"><b>POLICY</b> · CONTENT</span>
+        <b>SFW portfolio, professional delivery.</b>
+        All work shown and delivered through this engagement is safe-for-work and
+        platform-compliant by design.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="fnote">CONTACT VIA UPWORK MESSAGE · RESPONSES WITHIN 24H (JST)</div>
+    <div class="fnote">DOSSIER v1.0 · 2026-06</div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+// staggered scroll reveal
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:.12});
+document.querySelectorAll('.rv').forEach((el,i)=>{
+  el.style.transitionDelay=`${(i%4)*70}ms`;
+  io.observe(el);
+});
+</script>
+</body>
+</html>

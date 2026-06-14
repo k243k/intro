@@ -123,6 +123,29 @@ h2{font-family:var(--serif);font-weight:600;font-size:clamp(20px,5.5vw,28px);lin
 .chat-input button{flex:none;border:none;border-radius:20px;padding:0 18px;background:#06c755;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans)}
 .chat-input button:disabled{opacity:.5}
 
+/* iPhoneフレーム＋LINE自動会話ループ */
+.phonewrap{display:flex;justify-content:center;margin-top:24px}
+.phone{width:264px;background:#0b0b0d;border-radius:44px;padding:11px;box-shadow:0 34px 64px -30px rgba(40,38,30,.6)}
+.phone-screen{position:relative;border-radius:33px;overflow:hidden;background:#8aabd6;aspect-ratio:9/19.3;display:flex;flex-direction:column}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:118px;height:21px;background:#0b0b0d;border-radius:0 0 15px 15px;z-index:6}
+.statusbar{display:flex;justify-content:space-between;align-items:center;padding:6px 20px 3px;font-size:10px;font-weight:700;color:#10243a;z-index:4}
+.statusbar .ic{letter-spacing:1px}
+.line-head{display:flex;align-items:center;gap:8px;padding:6px 11px;background:#fafafa;border-bottom:1px solid #e4e4e4;z-index:3}
+.line-head .bk{color:#222;font-size:15px;line-height:1}
+.line-head .ava{width:25px;height:25px;border-radius:50%;background:#c0392b;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
+.line-head .nm{font-size:12.5px;font-weight:600;color:#1a1a1e}
+.line-head .mn{margin-left:auto;color:#9a9a9a;font-size:15px}
+.line-body{flex:1;overflow:hidden;padding:11px 9px;display:flex;flex-direction:column;gap:7px}
+.lmsg{max-width:76%;font-size:11.5px;line-height:1.5;padding:7px 10px;border-radius:13px;word-break:break-word;animation:pop .25s ease-out}
+.lmsg.you{align-self:flex-start;background:#fff;color:#1a1a1e;border-top-left-radius:4px}
+.lmsg.me{align-self:flex-end;background:#06c755;color:#fff;border-top-right-radius:4px}
+.ltyping{align-self:flex-start;background:#fff;color:#9a9a9a;font-size:12px;letter-spacing:2px;padding:8px 12px;border-radius:13px;border-top-left-radius:4px;animation:pop .25s ease-out}
+.line-foot{display:flex;align-items:center;gap:7px;padding:7px 11px;background:#fafafa;border-top:1px solid #e8e8e8}
+.line-foot .ib{flex:1;height:22px;border-radius:14px;background:#fff;border:1px solid #e0e0e0}
+.line-foot .sm{width:22px;height:22px;border-radius:50%;background:#06c755;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;flex:none}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.try-own{text-align:center;font-size:12px;color:var(--ink-dim);letter-spacing:.06em;margin-top:22px}
+
 /* 担当範囲・技術構成 */
 .specs{margin-top:24px;display:grid;gap:16px}
 .spec h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-dim);margin-bottom:8px;font-weight:400}
@@ -287,7 +310,20 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
   <article class="project wrap rv">
     <span class="p-tag">AI × LINEボット構築</span>
     <h3 class="p-title">AI×LINEボット構築</h3>
-    <p class="p-why">お店やサービスのLINE公式アカウントに、AIで自動応答するボットを作ります。よくある質問・予約受付・顧客対応を24時間自動化。会話で終わらせず、予約や顧客情報を裏側の管理画面に残すところまで作ります。下のチャットは<b>実際に入力して動かせます</b>。話しかけてみてください。</p>
+    <p class="p-why">お店やサービスのLINE公式アカウントに、AIで自動応答するボットを作ります。よくある質問・予約受付・顧客対応を24時間自動化。会話で終わらせず、予約や顧客情報を裏側の管理画面に残すところまで作ります。下は、実際にLINEで予約を受けている様子です。</p>
+    <div class="phonewrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="notch"></div>
+          <div class="statusbar"><span>9:41</span><span class="ic">●●● 📶 100%</span></div>
+          <div class="line-head"><span class="bk">‹</span><span class="ava">灯</span><span class="nm">居酒屋 灯（あかり）</span><span class="mn">⋮</span></div>
+          <div class="line-body" id="lineBody"></div>
+          <div class="line-foot"><span class="ib"></span><span class="sm">↑</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="try-own">↓ 自分でも打って試せます</p>
     <p class="touch" style="margin-bottom:8px">▶ 実際に入力できます（架空の飲食店の受付ボット）</p>
     <div class="chat">
       <div class="chat-log" id="chatLog" aria-live="polite">
@@ -605,6 +641,57 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
         if (b) send(b.getAttribute("data-q"));
       });
     }
+  })();
+
+  // ===== iPhone内のLINE自動会話ループ =====
+  (function () {
+    var body = document.getElementById("lineBody");
+    if (!body) return;
+    var CONV = [
+      { who: "you", t: "いらっしゃいませ！居酒屋 灯です🏮 ご予約承ります。" },
+      { who: "me", t: "今日2名、20時で空いてますか？" },
+      { who: "you", t: "ありがとうございます！本日20:00、2名様でご用意できます。お名前を教えていただけますか？" },
+      { who: "me", t: "伏見です" },
+      { who: "you", t: "伏見様、20:00〜2名で承りました🙇 予約を確定し、管理画面にも登録しました。ご来店お待ちしています！" }
+    ];
+    var reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+    var timers = [];
+    function clearAll() { timers.forEach(clearTimeout); timers = []; body.innerHTML = ""; }
+    function add(cls, text) {
+      var p = document.createElement("p");
+      p.className = cls + (cls === "ltyping" ? "" : " lmsg");
+      p.className = (cls === "ltyping") ? "ltyping" : ("lmsg " + cls);
+      p.textContent = text;
+      body.appendChild(p);
+      while (body.children.length > 6) body.removeChild(body.firstChild);
+    }
+    function run() {
+      clearAll();
+      if (reduce) { CONV.forEach(function (m) { add(m.who, m.t); }); return; }
+      var t = 400;
+      CONV.forEach(function (m) {
+        if (m.who === "you") {
+          timers.push(setTimeout(function () { add("ltyping", "···"); }, t));
+          t += 900;
+          timers.push(setTimeout(function () {
+            var tp = body.querySelector(".ltyping"); if (tp) tp.remove();
+            add("you", m.t);
+          }, t));
+          t += Math.min(2600, 900 + m.t.length * 45);
+        } else {
+          timers.push(setTimeout(function () { add("me", m.t); }, t));
+          t += 1100;
+        }
+      });
+      timers.push(setTimeout(run, t + 2800)); // ループ
+    }
+    var started = false;
+    var io2 = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting && !started) { started = true; run(); }
+      });
+    }, { threshold: 0.3 });
+    io2.observe(body);
   })();
 })();
 </script>

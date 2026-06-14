@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>https://aequiro.example.com/</loc>
+<lastmod>2026-06-14T09:43:24.097Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>1</priority>
+</url>
+<url>
+<loc>https://aequiro.example.com/privacy/</loc>
+<lastmod>2026-06-14T09:43:24.097Z</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.3</priority>
+</url>
+<url>
+<loc>https://aequiro.example.com/terms/</loc>
+<lastmod>2026-06-14T09:43:24.097Z</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.3</priority>
+</url>
+<url>
+<loc>https://aequiro.example.com/law/</loc>
+<lastmod>2026-06-14T09:43:24.097Z</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.3</priority>
+</url>
+</urlset>

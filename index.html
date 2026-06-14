@@ -96,7 +96,10 @@ h2{font-family:var(--serif);font-weight:600;font-size:clamp(20px,5.5vw,28px);lin
 /* SNS運用リール */
 .reels{display:flex;gap:12px;margin-top:24px;justify-content:center}
 .reel{flex:1;max-width:230px;display:flex;flex-direction:column;gap:9px}
-.reel video{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line2);background:var(--panel);box-shadow:0 16px 34px -22px rgba(40,38,30,.45)}
+.reel .vwrap{position:relative}
+.reel video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line2);background:var(--panel);box-shadow:0 16px 34px -22px rgba(40,38,30,.45)}
+.snd{position:absolute;right:8px;bottom:8px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.58);border:none;color:#fff;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.snd:active{transform:scale(.92)}
 .reel .rcap{font-size:11px;color:var(--ink-dim);letter-spacing:.03em;line-height:1.6}
 .reel .rcap b{color:var(--ink);font-weight:600;display:block;font-size:12px}
 .sns-do{margin-top:22px;display:grid;gap:10px}
@@ -247,11 +250,16 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
     </div>
     <div class="reels">
       <div class="reel">
-        <video src="./assets/reel-miyako.mp4" poster="./assets/reel-miyako.webp" muted loop playsinline preload="none" aria-label="制作したリール：宮古島のプロポーズ"></video>
-        <p class="rcap"><b>結婚・記念日サービス</b>宮古島ロケのプロポーズ演出リール</p>
+        <div class="vwrap">
+          <video id="reel1" src="./assets/reel-miyako.mp4" poster="./assets/reel-miyako.webp" muted loop playsinline preload="none" aria-label="制作したリール：宮古島のプロポーズ"></video>
+          <button class="snd" id="snd1" aria-label="音を出す">🔇</button>
+        </div>
+        <p class="rcap"><b>結婚・記念日サービス</b>宮古島ロケのプロポーズ演出リール（🔇を押すと音が出ます）</p>
       </div>
       <div class="reel">
-        <video src="./assets/reel-aurora.mp4" poster="./assets/reel-aurora.webp" muted loop playsinline preload="none" aria-label="制作したリール：ラウンジのプロモーション"></video>
+        <div class="vwrap">
+          <video src="./assets/reel-aurora.mp4" poster="./assets/reel-aurora.webp" muted loop playsinline preload="none" aria-label="制作したリール：ラウンジのプロモーション"></video>
+        </div>
         <p class="rcap"><b>店舗プロモーション</b>高級ラウンジの世界観を見せるリール</p>
       </div>
     </div>
@@ -368,6 +376,16 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
     });
   }, { rootMargin: "0px 0px 120px 0px", threshold: 0.08 });
   document.querySelectorAll(".rv").forEach(function (el) { io.observe(el); });
+
+  // リール音声トグル
+  var snd1 = document.getElementById("snd1"), reel1 = document.getElementById("reel1");
+  if (snd1 && reel1) {
+    snd1.addEventListener("click", function () {
+      reel1.muted = !reel1.muted;
+      snd1.textContent = reel1.muted ? "🔇" : "🔊";
+      if (!reel1.muted) { reel1.play().catch(function () {}); }
+    });
+  }
 
   var DATA = [
     { label:"革財布", thumb:"革財布", memo:"ヌメ革の二つ折り、手のひらサイズ、キャメル色。",

@@ -1,1 +1,4 @@
 qa/
+_srv.py
+_*.mjs
+_*.png

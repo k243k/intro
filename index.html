@@ -123,26 +123,50 @@ h2{font-family:var(--serif);font-weight:600;font-size:clamp(20px,5.5vw,28px);lin
 .chat-input button{flex:none;border:none;border-radius:20px;padding:0 18px;background:#06c755;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans)}
 .chat-input button:disabled{opacity:.5}
 
-/* iPhoneフレーム＋LINE自動会話ループ */
-.phonewrap{display:flex;justify-content:center;margin-top:24px}
-.phone{width:264px;background:#0b0b0d;border-radius:44px;padding:11px;box-shadow:0 34px 64px -30px rgba(40,38,30,.6)}
-.phone-screen{position:relative;border-radius:33px;overflow:hidden;background:#8aabd6;aspect-ratio:9/19.3;display:flex;flex-direction:column}
-.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:118px;height:21px;background:#0b0b0d;border-radius:0 0 15px 15px;z-index:6}
-.statusbar{display:flex;justify-content:space-between;align-items:center;padding:6px 20px 3px;font-size:10px;font-weight:700;color:#10243a;z-index:4}
-.statusbar .ic{letter-spacing:1px}
-.line-head{display:flex;align-items:center;gap:8px;padding:6px 11px;background:#fafafa;border-bottom:1px solid #e4e4e4;z-index:3}
-.line-head .bk{color:#222;font-size:15px;line-height:1}
-.line-head .ava{width:25px;height:25px;border-radius:50%;background:#c0392b;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
-.line-head .nm{font-size:12.5px;font-weight:600;color:#1a1a1e}
-.line-head .mn{margin-left:auto;color:#9a9a9a;font-size:15px}
-.line-body{flex:1;overflow:hidden;padding:11px 9px;display:flex;flex-direction:column;gap:7px}
-.lmsg{max-width:76%;font-size:11.5px;line-height:1.5;padding:7px 10px;border-radius:13px;word-break:break-word;animation:pop .25s ease-out}
-.lmsg.you{align-self:flex-start;background:#fff;color:#1a1a1e;border-top-left-radius:4px}
-.lmsg.me{align-self:flex-end;background:#06c755;color:#fff;border-top-right-radius:4px}
-.ltyping{align-self:flex-start;background:#fff;color:#9a9a9a;font-size:12px;letter-spacing:2px;padding:8px 12px;border-radius:13px;border-top-left-radius:4px;animation:pop .25s ease-out}
-.line-foot{display:flex;align-items:center;gap:7px;padding:7px 11px;background:#fafafa;border-top:1px solid #e8e8e8}
-.line-foot .ib{flex:1;height:22px;border-radius:14px;background:#fff;border:1px solid #e0e0e0}
-.line-foot .sm{width:22px;height:22px;border-radius:50%;background:#06c755;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;flex:none}
+/* ===== iPhoneフレーム＋LINE 完全再現 ===== */
+.phonewrap{display:flex;justify-content:center;margin-top:26px}
+.phone{width:min(288px,82vw);background:#0c0c0e;border-radius:48px;padding:10px;box-shadow:0 44px 72px -30px rgba(40,38,30,.55),0 0 0 2px #2b2b2f}
+.phone-screen{position:relative;border-radius:38px;overflow:hidden;background:#b3cdea;aspect-ratio:9/19.6;display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif}
+.dyn{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:84px;height:24px;background:#000;border-radius:13px;z-index:7}
+.statusbar{display:flex;justify-content:space-between;align-items:center;padding:11px 21px 3px;color:#101015;background:#fff;z-index:5}
+.statusbar .clk{font-size:11px;font-weight:600;letter-spacing:.02em}
+.statusbar .sb-r{display:flex;align-items:center;gap:5px;transform:scale(.85);transform-origin:right center}
+.statusbar .sb-r svg{display:block;fill:#101015}
+
+/* LINEヘッダー */
+.line-head{display:flex;align-items:center;gap:8px;padding:2px 12px 7px;background:#fff;border-bottom:1px solid #ececef;z-index:4}
+.line-head .bk{color:#33363b;font-size:22px;line-height:.6;font-weight:300;margin-right:-3px}
+.line-head .nm{font-size:12.5px;font-weight:600;color:#0e0e12;display:flex;align-items:center;gap:3px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.line-head .vb{flex:none;width:11px;height:11px;border-radius:3px;background:#06c755;display:flex;align-items:center;justify-content:center}
+.line-head .vb svg{width:8px;height:8px;fill:#fff;display:block}
+.line-head .rt{margin-left:auto;display:flex;align-items:center;gap:13px;color:#33363b;flex:none}
+.line-head .rt svg{width:18px;height:18px;display:block}
+
+/* チャット本文（壁紙：淡い水色＋雲） */
+.line-body{flex:1;overflow:hidden;padding:8px 9px 6px;display:flex;flex-direction:column;justify-content:flex-start;gap:0;background:radial-gradient(130px 46px at 26% 84%,rgba(255,255,255,.55),transparent 72%),radial-gradient(175px 60px at 73% 95%,rgba(255,255,255,.5),transparent 72%),radial-gradient(110px 40px at 93% 68%,rgba(255,255,255,.4),transparent 72%),linear-gradient(180deg,#a7c3e6 0%,#b4cee9 60%,#c4d8ee 100%)}
+.date-pill{align-self:center;margin:5px 0 9px;font-size:9px;color:#fff;background:rgba(78,96,120,.5);padding:2px 11px;border-radius:11px;letter-spacing:.04em}
+.row{display:flex;align-items:flex-start;gap:6px;margin-top:7px}
+.row.rin{justify-content:flex-start}
+.row.rout{justify-content:flex-end}
+.mava{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none}
+.mava.gone{visibility:hidden}
+.col{display:flex;flex-direction:column;max-width:73%}
+.bw{display:flex;align-items:flex-end;gap:4px}
+.bbl{position:relative;font-size:11px;line-height:1.45;padding:6px 9px;border-radius:14px;word-break:break-word}
+.row.rin .bbl{background:#fff;color:#191b1f;border-top-left-radius:4px}
+.row.rout .bbl{background:#06c755;color:#06320f;border-top-right-radius:4px}
+.row.rin .bbl::before{content:"";position:absolute;top:0;left:-4px;width:9px;height:7px;background:#fff;clip-path:polygon(100% 0,100% 100%,0 0)}
+.row.rout .bbl::before{content:"";position:absolute;top:0;right:-4px;width:9px;height:7px;background:#06c755;clip-path:polygon(0 0,0 100%,100% 0)}
+.lmeta{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;gap:0;font-size:8px;line-height:1.25;color:#566374;white-space:nowrap;padding-bottom:1px}
+.lmeta .rd{color:#566374}
+
+/* LINEフッター（入力バー） */
+.line-foot{display:flex;align-items:center;gap:11px;padding:7px 12px;background:#fff;border-top:1px solid #ededf0}
+.line-foot svg{width:19px;height:19px;color:#3c4046;flex:none;display:block}
+.line-foot .ib{flex:1;height:26px;border-radius:14px;background:#f0f1f3;display:flex;align-items:center;padding:0 11px}
+.line-foot .ib .aa{font-size:11px;color:#9aa0a8}
+.homebar{background:#fff;display:flex;justify-content:center;padding-bottom:6px}
+.homebar span{width:100px;height:4px;border-radius:3px;background:#0e0e12;opacity:.82}
 @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .try-own{text-align:center;font-size:12px;color:var(--ink-dim);letter-spacing:.06em;margin-top:22px}
 
@@ -314,11 +338,34 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
     <div class="phonewrap">
       <div class="phone">
         <div class="phone-screen">
-          <div class="notch"></div>
-          <div class="statusbar"><span>9:41</span><span class="ic">●●● 📶 100%</span></div>
-          <div class="line-head"><span class="bk">‹</span><span class="ava">灯</span><span class="nm">居酒屋 灯（あかり）</span><span class="mn">⋮</span></div>
+          <div class="dyn"></div>
+          <div class="statusbar">
+            <span class="clk">9:41</span>
+            <span class="sb-r">
+              <svg viewBox="0 0 18 12" width="17" height="11" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg viewBox="0 0 16 12" width="16" height="11" aria-hidden="true"><path d="M8 2C4.9 2 2 3.2 0 5.1l1.4 1.5C3.1 5 5.4 4 8 4s4.9 1 6.6 2.6L16 5.1C14 3.2 11.1 2 8 2z"/><path d="M8 6c-1.8 0-3.4.7-4.6 1.9l1.5 1.5C5.7 8.5 6.8 8 8 8s2.3.5 3.1 1.4l1.5-1.5C11.4 6.7 9.8 6 8 6z"/><circle cx="8" cy="11" r="1.3"/></svg>
+              <svg viewBox="0 0 28 13" width="26" height="12" aria-hidden="true"><rect x="1" y="1.4" width="22" height="10.2" rx="3" fill="none" stroke="#101015" stroke-width="1.1" opacity=".4"/><rect x="2.6" y="3" width="16" height="7" rx="1.6"/><rect x="24.4" y="4.6" width="2" height="3.8" rx="1" opacity=".4"/></svg>
+            </span>
+          </div>
+          <div class="line-head">
+            <span class="bk">‹</span>
+            <span class="nm">居酒屋 灯<span class="vb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 16.6 5 12l1.4-1.4 3.2 3.2 7.6-7.6L18.6 7z"/></svg></span></span>
+            <span class="rt">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </span>
+          </div>
           <div class="line-body" id="lineBody"></div>
-          <div class="line-foot"><span class="ib"></span><span class="sm">↑</span></div>
+          <div class="line-foot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l2-3h8l2 3h3a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="m21 15-5-5L5 21"/></svg>
+            <span class="ib"><span class="aa">Aa</span></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="21.5"/></svg>
+          </div>
+          <div class="homebar"><span></span></div>
         </div>
       </div>
     </div>
@@ -643,55 +690,50 @@ footer{margin-top:80px;padding:26px 22px calc(26px + env(safe-area-inset-bottom)
     }
   })();
 
-  // ===== iPhone内のLINE自動会話ループ =====
+  // ===== iPhone内：LINE公式アカウント トーク画面（静止表示・実機スクショ準拠） =====
   (function () {
     var body = document.getElementById("lineBody");
     if (!body) return;
+    var AVA = "./assets/line-avatar.jpg";
+    // in = 相手（公式アカウント「居酒屋 灯」/白・左）, out = 自分（緑・右）
     var CONV = [
-      { who: "you", t: "いらっしゃいませ！居酒屋 灯です🏮 ご予約承ります。" },
-      { who: "me", t: "今日2名、20時で空いてますか？" },
-      { who: "you", t: "ありがとうございます！本日20:00、2名様でご用意できます。お名前を教えていただけますか？" },
-      { who: "me", t: "伏見です" },
-      { who: "you", t: "伏見様、20:00〜2名で承りました🙇 予約を確定し、管理画面にも登録しました。ご来店お待ちしています！" }
+      { w: "in",  t: "いらっしゃいませ！居酒屋 灯です。ご予約を承ります。", tm: "20:40" },
+      { w: "out", t: "今夜20時、2名で予約したいです", tm: "20:41" },
+      { w: "in",  t: "ありがとうございます！ご予約のお名前とお電話番号を教えていただけますか？", tm: "20:41" },
+      { w: "out", t: "伏見健太　090-1234-5678", tm: "20:42" },
+      { w: "in",  t: "伏見様、20:00・2名様で承りました。管理画面にも登録済みです。当日お待ちしております！", tm: "20:42" }
     ];
-    var reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
-    var timers = [];
-    function clearAll() { timers.forEach(clearTimeout); timers = []; body.innerHTML = ""; }
-    function add(cls, text) {
-      var p = document.createElement("p");
-      p.className = cls + (cls === "ltyping" ? "" : " lmsg");
-      p.className = (cls === "ltyping") ? "ltyping" : ("lmsg " + cls);
-      p.textContent = text;
-      body.appendChild(p);
-      while (body.children.length > 6) body.removeChild(body.firstChild);
-    }
-    function run() {
-      clearAll();
-      if (reduce) { CONV.forEach(function (m) { add(m.who, m.t); }); return; }
-      var t = 400;
-      CONV.forEach(function (m) {
-        if (m.who === "you") {
-          timers.push(setTimeout(function () { add("ltyping", "···"); }, t));
-          t += 900;
-          timers.push(setTimeout(function () {
-            var tp = body.querySelector(".ltyping"); if (tp) tp.remove();
-            add("you", m.t);
-          }, t));
-          t += Math.min(2600, 900 + m.t.length * 45);
-        } else {
-          timers.push(setTimeout(function () { add("me", m.t); }, t));
-          t += 1100;
-        }
-      });
-      timers.push(setTimeout(run, t + 2800)); // ループ
-    }
-    var started = false;
-    var io2 = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting && !started) { started = true; run(); }
-      });
-    }, { threshold: 0.3 });
-    io2.observe(body);
+    // 日付ピル
+    var d = document.createElement("div"); d.className = "date-pill";
+    var n = new Date(), wd = ["日", "月", "火", "水", "木", "金", "土"][n.getDay()];
+    d.textContent = (n.getMonth() + 1) + "月" + n.getDate() + "日(" + wd + ")";
+    body.appendChild(d);
+    // 全メッセージを一括描画（アニメーションなし）
+    var prevW = null;
+    CONV.forEach(function (m) {
+      var firstOfGroup = (m.w !== prevW);
+      var row = document.createElement("div"); row.className = "row r" + m.w;
+      if (m.w === "in") {
+        var av = document.createElement("img"); av.className = "mava"; av.src = AVA; av.alt = ""; av.decoding = "async";
+        if (!firstOfGroup) av.className += " gone";
+        row.appendChild(av);
+      }
+      var col = document.createElement("div"); col.className = "col";
+      var bw = document.createElement("div"); bw.className = "bw";
+      var bbl = document.createElement("div"); bbl.className = "bbl"; bbl.textContent = m.t;
+      var meta = document.createElement("div"); meta.className = "lmeta";
+      var tm = document.createElement("span"); tm.className = "tm"; tm.textContent = m.tm;
+      if (m.w === "out") {
+        var rd = document.createElement("span"); rd.className = "rd"; rd.textContent = "既読";
+        meta.appendChild(rd); meta.appendChild(tm);
+        bw.appendChild(meta); bw.appendChild(bbl);
+      } else {
+        meta.appendChild(tm);
+        bw.appendChild(bbl); bw.appendChild(meta);
+      }
+      col.appendChild(bw); row.appendChild(col); body.appendChild(row);
+      prevW = m.w;
+    });
   })();
 })();
 </script>

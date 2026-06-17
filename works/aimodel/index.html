@@ -212,7 +212,8 @@ table.data td.dim{color:var(--dim)}
 
 /* workflow figures */
 .wf{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
-.wf .shot{aspect-ratio:16/10;border-radius:4px}
+.wf .shot{aspect-ratio:16/10;border-radius:4px;overflow:hidden}
+.wf .shot img{width:100%;height:100%;object-fit:cover;display:block}
 .annos{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .anno{
   font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted);
@@ -399,7 +400,7 @@ html.js .rv.in{opacity:1;transform:none}
 
     <div class="char-head rv">
       <h3>Character A — "M"</h3>
-      <span class="meta">Original character · custom LoRA · FLUX.1 dev</span>
+      <span class="meta">Original character · custom LoRA · Z-Image-Turbo</span>
       <span class="badge ok">LIVE SAMPLES</span>
     </div>
     <div class="scenegrid rv">
@@ -488,17 +489,17 @@ html.js .rv.in{opacity:1;transform:none}
 
     <div class="pipeline rv">
       <div class="pipe-step">
-        <div class="frame slot" style="aspect-ratio:4/5"><span class="cross"></span><span class="lbl">source concept set</span></div>
+        <div class="frame" style="aspect-ratio:4/5"><img src="assets/process/concept.jpg" alt="source concept set"></div>
         <div class="cap"><b>1 · Source</b>base generations, curated</div>
       </div>
       <div class="pipe-arrow">→</div>
       <div class="pipe-step">
-        <div class="frame slot" style="aspect-ratio:4/5"><span class="cross"></span><span class="lbl">reference pack grid</span></div>
+        <div class="frame" style="aspect-ratio:4/5"><img src="assets/process/refpack.jpg" alt="reference pack grid"></div>
         <div class="cap"><b>2 · Reference pack</b>40–50 imgs, variation by design</div>
       </div>
       <div class="pipe-arrow">→</div>
       <div class="pipe-step">
-        <div class="frame slot" style="aspect-ratio:4/5"><span class="cross"></span><span class="lbl">training run chart</span></div>
+        <div class="frame" style="aspect-ratio:4/5"><img src="assets/process/training.jpg" alt="training run config"></div>
         <div class="cap"><b>3 · LoRA training</b>ai-toolkit, monitored samples</div>
       </div>
       <div class="pipe-arrow">→</div>
@@ -513,14 +514,14 @@ html.js .rv.in{opacity:1;transform:none}
         <div class="kicker" style="margin-bottom:14px"><b>TRAINING CONFIG</b> — ACTUAL VALUES FROM MY PIPELINE</div>
         <table class="data">
           <tbody>
-            <tr><td class="dim">Base model</td><td class="mono">FLUX.1 dev (fp8)</td></tr>
+            <tr><td class="dim">Base model</td><td class="mono">Z-Image-Turbo (6B)</td></tr>
             <tr><td class="dim">Trainer</td><td class="mono">ai-toolkit (ostris)</td></tr>
-            <tr><td class="dim">Dataset size</td><td class="mono">40–50 images, 1024×1024</td></tr>
-            <tr><td class="dim">Steps</td><td class="mono">2,500</td></tr>
+            <tr><td class="dim">Dataset size</td><td class="mono">100+ images, 512–768px</td></tr>
+            <tr><td class="dim">Steps</td><td class="mono">3,000</td></tr>
             <tr><td class="dim">Learning rate</td><td class="mono">1e-4</td></tr>
             <tr><td class="dim">Network rank / alpha</td><td class="mono">32 / 32</td></tr>
             <tr><td class="dim">Batch size</td><td class="mono">1 (grad-accum 1)</td></tr>
-            <tr><td class="dim">Text encoder</td><td class="mono">frozen</td></tr>
+            <tr><td class="dim">Text encoder</td><td class="mono">qwen-3-4b · frozen</td></tr>
           </tbody>
         </table>
       </div>
@@ -549,8 +550,8 @@ html.js .rv.in{opacity:1;transform:none}
       face-detail passes. Screenshots show structure; the <strong>documented JSON ships as a deliverable</strong>.</p>
 
     <div class="wf rv">
-      <div class="shot slot"><span class="cross"></span><span class="lbl">screenshot · identity pipeline graph</span></div>
-      <div class="shot slot"><span class="cross"></span><span class="lbl">screenshot · pose-controlled generation graph</span></div>
+      <div class="shot"><img src="assets/process/wf-identity.jpg" alt="identity pipeline graph"></div>
+      <div class="shot"><img src="assets/process/wf-pose.jpg" alt="pose-controlled generation graph"></div>
     </div>
 
     <div class="annos rv">
@@ -594,9 +595,9 @@ html.js .rv.in{opacity:1;transform:none}
       <div class="rv">
         <div class="kicker" style="margin-bottom:14px"><b>POSE DIRECTION</b> · CONTROLNET</div>
         <div class="scenegrid" style="grid-template-columns:repeat(3,1fr)">
-          <div class="cell slot"><span class="cross"></span><span class="lbl">pose ref</span></div>
-          <div class="cell slot"><span class="cross"></span><span class="lbl">skeleton</span></div>
-          <div class="cell slot"><span class="cross"></span><span class="lbl">result</span></div>
+          <div class="cell"><img src="assets/applied/pose-ref.jpg" alt="pose reference"><span class="tag">POSE REF</span></div>
+          <div class="cell" style="background:#000"><img src="assets/applied/skeleton.jpg" alt="openpose skeleton" style="object-fit:contain"><span class="tag">OPENPOSE</span></div>
+          <div class="cell"><img src="assets/applied/result.jpg" alt="pose-guided result"><span class="tag">RESULT</span></div>
         </div>
       </div>
       <div class="rv">

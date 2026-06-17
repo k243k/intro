@@ -319,6 +319,12 @@ html.js .rv.in{opacity:1;transform:none}
   .rv{opacity:1;transform:none}
   .vid,.slot{break-inside:avoid}
 }
+/* lightbox: クリックで画像拡大 */
+.cell img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;background:rgba(8,8,10,.94);cursor:zoom-out;padding:24px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:94vh;width:auto;height:auto;object-fit:contain;border-radius:4px;box-shadow:0 24px 90px rgba(0,0,0,.65)}
+.lightbox .lb-close{position:absolute;top:14px;right:18px;color:#fff;font-family:var(--mono);font-size:12px;letter-spacing:.12em;opacity:.65}
 </style>
 </head>
 <body>
@@ -680,6 +686,7 @@ html.js .rv.in{opacity:1;transform:none}
   </div>
 </footer>
 
+<div class="lightbox" id="lb" aria-hidden="true"><span class="lb-close">CLOSE ✕</span><img alt="enlarged"></div>
 <script>
 document.documentElement.classList.add('js');
 // staggered scroll reveal
@@ -690,6 +697,14 @@ document.querySelectorAll('.rv').forEach((el,i)=>{
   el.style.transitionDelay=`${(i%4)*70}ms`;
   io.observe(el);
 });
+// lightbox: グリッド画像クリックで拡大表示
+const lb=document.getElementById('lb'), lbImg=lb.querySelector('img');
+function closeLb(){lb.classList.remove('open');lb.setAttribute('aria-hidden','true');}
+document.querySelectorAll('.cell img').forEach(im=>{
+  im.addEventListener('click',()=>{lbImg.src=im.currentSrc||im.src;lbImg.alt=im.alt;lb.classList.add('open');lb.setAttribute('aria-hidden','false');});
+});
+lb.addEventListener('click',closeLb);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();});
 </script>
 </body>
 </html>
